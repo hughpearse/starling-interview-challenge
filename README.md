@@ -66,6 +66,15 @@ Below outlines some requirements to score points in the interview.
 16. Postman collection - YES
 17. Docker runtime - TODO
 
+## Dependencies
+
+Install Java 17
+
+```bash
+foo@bar:~$ wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm
+foo@bar:~$ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
+```
+
 ## Build
 
 Run the following command to build the classes
@@ -86,6 +95,12 @@ Run the following command to start the application locally
 
 ```bash
 foo@bar:~$ ./gradlew bootRun
+```
+
+Or if you cant be bothered installing java 17, use docker:
+
+```bash
+foo@bar:~$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar
 ```
 
 ## Tests
