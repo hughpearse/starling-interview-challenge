@@ -80,7 +80,7 @@ Below outlines some requirements to score points in the interview.
 14. Logging - YES
 15. Builds to jar - YES
 16. Postman collection - YES
-17. Docker runtime - TODO
+17. Docker runtime - YES
 
 ## Dependencies
 
