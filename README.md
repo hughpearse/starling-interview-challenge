@@ -29,7 +29,7 @@ Notes: implementation should be enterprise grade
 ## Requirements Summary
 
 Given the following input parameters:
-1. Date week start (eg: Sunday 1st January 2023, ending @ + 6 days)
+1. Date week start (eg: Sunday 1st January 2023, ending @ + 7 days)
 2. Goal name (eg: Holidays)
 3. Account name (eg: main current account)
 
@@ -51,10 +51,10 @@ Below outlines some requirements to score points in the interview.
 1. Compiles - YES
 2. Launches/Runs - YES
 3. Works as expected - YES
-4. Automated tests - TODO
-4.1 Arrange Act Assert (AAA) - TODO
+4. Automated tests - YES
+4.1 Arrange Act Assert (AAA) - YES
 5. Documentation - YES
-5.1 Javadoc (code)
+5.1 Javadoc (code) - YES
 5.2 Swagger (inbound API) - TODO
 5.3 README instructions - YES
 6. Code quality - YES
@@ -62,8 +62,8 @@ Below outlines some requirements to score points in the interview.
 6.2 Application of SOLID principals - YES
 6.3 Error handling - YES
 6.4 Logging - YES
-7. Builds to jar - TODO
-8. Postman collection - TODO
+7. Builds to jar - YES
+8. Postman collection - YES
 9. Docker runtime - TODO
 
 ## Build
