@@ -1,0 +1,23 @@
+@startuml
+class RetroactiveRoundupController
+class RoundupServiceImpl
+class AccountsService
+class SavingsGoalService
+class TransactionFeedService
+class AccountsClient
+class SavingsGoalsClient
+class TransactionFeedClient
+class BaseHttpClient
+
+RetroactiveRoundupController --> RoundupServiceImpl : routes traffic to
+RoundupServiceImpl --> AccountsService : uses
+RoundupServiceImpl --> SavingsGoalService : uses
+RoundupServiceImpl --> TransactionFeedService : uses
+AccountsService --> AccountsClient : uses
+SavingsGoalService --> SavingsGoalsClient : uses
+TransactionFeedService --> TransactionFeedClient : uses
+AccountsClient --> BaseHttpClient : uses
+SavingsGoalsClient --> BaseHttpClient : uses
+TransactionFeedClient --> BaseHttpClient : uses
+@enduml
+
