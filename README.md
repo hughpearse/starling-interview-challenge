@@ -40,9 +40,9 @@ Enumerate all transactions in that week, and for each transaction calculate the 
 Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
 1. A savings goal called "Holidays" will be created
 2. Transactions with specific criteria will be settled
-2.1 GBP currency
-2.2 Transactions must be settled
-2.3 Transactions must be towards the "OUT" direction
+3. GBP currency
+4. Transactions must be settled
+5. Transactions must be towards the "OUT" direction
 
 ## Checklist for rubric
 
@@ -54,17 +54,17 @@ Below outlines some requirements to score points in the interview.
 4. Automated tests - YES
 4.1 Arrange Act Assert (AAA) - YES
 5. Documentation - YES
-5.1 Javadoc (code) - YES
-5.2 Swagger (inbound API) - TODO
-5.3 README instructions - YES
-6. Code quality - YES
-6.1 Domain Driven Design (DDD) - YES
-6.2 Application of SOLID principals - YES
-6.3 Error handling - YES
-6.4 Logging - YES
-7. Builds to jar - YES
-8. Postman collection - YES
-9. Docker runtime - TODO
+6. Javadoc (code) - YES
+7. Swagger (inbound API) - TODO
+8. README instructions - YES
+9. Code quality - YES
+10. Domain Driven Design (DDD) - YES
+11. Application of SOLID principals - YES
+12. Error handling - YES
+13. Logging - YES
+14. Builds to jar - YES
+15. Postman collection - YES
+16. Docker runtime - TODO
 
 ## Build
 
