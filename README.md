@@ -103,7 +103,7 @@ Run the following command to start the application locally
 foo@bar:starling-interview-challenge$ ./gradlew bootRun
 ```
 
-Or if you cant be bothered installing java 17, use docker:
+Or if you cant be bothered installing java 17, launch one of the [releases](https://github.com/hughpearse/starling-interview-challenge/releases/) docker:
 
 ```bash
 foo@bar:starling-interview-challenge$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar
