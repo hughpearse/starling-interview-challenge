@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.starling.challenge.outboundclients.services.starling.AccountServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-12-18T17:21:49" hostname="AP-LMCALY5BFLMZ" time="0.141">
+  <properties/>
+  <testcase name="testGetAccount()" classname="com.starling.challenge.outboundclients.services.starling.AccountServiceTest" time="0.141"/>
+  <system-out><![CDATA[17:21:49.602 [Test worker] INFO com.starling.challenge.domain.services.starling.AccountsService -- Account found.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

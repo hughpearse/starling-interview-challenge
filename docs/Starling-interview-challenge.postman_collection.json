@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "bd981686-407e-4a42-b91b-2cdeac7b03cb",
+		"name": "Starling-interview-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19644153"
+	},
+	"item": [
+		{
+			"name": "roundup-for-week",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"weekStarting\": \"2023-12-11T12:34:56.000Z\",\r\n    \"goalName\": \"Holidays\",\r\n    \"accountname\": \"Personal\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/retroactive-roundup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"retroactive-roundup"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

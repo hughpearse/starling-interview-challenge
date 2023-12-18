@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.starling.challenge.outboundclients.starling.BaseHttpClientTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-12-18T17:21:49" hostname="AP-LMCALY5BFLMZ" time="0.09">
+  <properties/>
+  <testcase name="getClientTest()" classname="com.starling.challenge.outboundclients.starling.BaseHttpClientTest" time="0.09"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
