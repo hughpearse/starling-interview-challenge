@@ -2,6 +2,12 @@
 
 Below project outlines an attempt by Hugh Pearse to complete the Starling Bank interview programming challenge.
 
+## Cloning the repo
+
+```bash
+foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.git
+```
+
 ## Requirements
 
 Excerpt from PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
@@ -80,13 +86,13 @@ foo@bar:~$ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 Run the following command to build the classes
 
 ```bash
-foo@bar:~$ ./gradlew build -x test
+foo@bar:starling-interview-challenge$ ./gradlew build -x test
 ```
 
 Run the following command to release the jar
 
 ```bash
-foo@bar:~$ ./gradlew jar
+foo@bar:starling-interview-challenge$ ./gradlew jar
 ```
 
 ## Launch
@@ -94,13 +100,13 @@ foo@bar:~$ ./gradlew jar
 Run the following command to start the application locally 
 
 ```bash
-foo@bar:~$ ./gradlew bootRun
+foo@bar:starling-interview-challenge$ ./gradlew bootRun
 ```
 
 Or if you cant be bothered installing java 17, use docker:
 
 ```bash
-foo@bar:~$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar
+foo@bar:starling-interview-challenge$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar
 ```
 
 ## Tests
@@ -108,7 +114,7 @@ foo@bar:~$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT
 Run the following command to run junit tests
 
 ```bash
-foo@bar:~$ ./gradlew test
+foo@bar:starling-interview-challenge$ ./gradlew test
 ```
 
 ## Consuming:
