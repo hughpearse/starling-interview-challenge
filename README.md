@@ -52,19 +52,19 @@ Below outlines some requirements to score points in the interview.
 2. Launches/Runs - YES
 3. Works as expected - YES
 4. Automated tests - YES
-4.1 Arrange Act Assert (AAA) - YES
-5. Documentation - YES
-6. Javadoc (code) - YES
-7. Swagger (inbound API) - TODO
-8. README instructions - YES
-9. Code quality - YES
-10. Domain Driven Design (DDD) - YES
-11. Application of SOLID principals - YES
-12. Error handling - YES
-13. Logging - YES
-14. Builds to jar - YES
-15. Postman collection - YES
-16. Docker runtime - TODO
+5. Arrange Act Assert (AAA) - YES
+6. Documentation - YES
+7. Javadoc (code) - YES
+8. Swagger (inbound API) - TODO
+9. README instructions - YES
+10. Code quality - YES
+11. Domain Driven Design (DDD) - YES
+12. Application of SOLID principals - YES
+13. Error handling - YES
+14. Logging - YES
+15. Builds to jar - YES
+16. Postman collection - YES
+17. Docker runtime - TODO
 
 ## Build
 
