@@ -8,6 +8,16 @@ Below project outlines an attempt by Hugh Pearse to complete the Starling Bank i
 foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.git
 ```
 
+## How it works
+
+1. A base HTTP client is configured for the hostname.
+2. Each logical domain is assigned its own client (accounts, transactions etc) with URLs configured.
+3. Each logical domain client is assigned a domain service (eg: get account -> or create account if doesnt exist)
+4. The client logic is in a saparate logical domain (eg: roundup service)
+5. The controller routes traffic to the roundup service which starts the whole process
+
+![class-diagram](./docs/classdiagram.png)
+
 ## Requirements
 
 Excerpt from PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
