@@ -209,6 +209,12 @@ There is a provided postman collection [here](./docs/Starling-interview-challeng
 2023-12-18T16:43:38.568Z  INFO 17704 --- [nio-8080-exec-2] c.s.c.d.s.starling.SavingsGoalService    : Transfer completed.
 ```
 
+# Bugs
+
+1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
+2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
+3. In swagger docs for SavingsGoalRequestV2, there is both a currency variable and target.currency variable.
+
 # References
 
 1. PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
