@@ -1,13 +1,41 @@
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Getting Started](#getting-started)
+   * [Cloning the repo](#cloning-the-repo)
+   * [How it works](#how-it-works)
+   * [Assumptions](#assumptions)
+   * [Requirements](#requirements)
+   * [Show me the data](#show-me-the-data)
+   * [Show me the solution](#show-me-the-solution)
+   * [Requirements Summary](#requirements-summary)
+   * [Checklist For Rubric](#checklist-for-rubric)
+   * [Dependencies](#dependencies)
+   * [Docker](#docker)
+   * [Manual Build Steps](#manual-build-steps)
+   * [Manual Launch Steps](#manual-launch-steps)
+   * [Unit Tests](#unit-tests)
+   * [Consuming:](#consuming)
+   * [Sample Logging output](#sample-logging-output)
+   * [Application Properties](#application-properties)
+   * [Security considerations](#security-considerations)
+   * [Bugs](#bugs)
+- [External References](#external-references)
+
+<!-- TOC end -->
+
+<!-- TOC --><a name="getting-started"></a>
 # Getting Started
 
 Below project outlines an attempt by Hugh Pearse to complete the Starling Bank interview programming challenge. Focus of development was to showcase good java design principals.
 
+<!-- TOC --><a name="cloning-the-repo"></a>
 ## Cloning the repo
 
 ```bash
 foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.git
 ```
 
+<!-- TOC --><a name="how-it-works"></a>
 ## How it works
 
 1. A base HTTP client is configured for the Starling server hostname.
@@ -20,6 +48,7 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 This architecture should be resilient enough to require minimal changes for future requirements.
 
+<!-- TOC --><a name="assumptions"></a>
 ## Assumptions
 
 Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
@@ -28,6 +57,7 @@ Given the complex nature of these requirements and the limited time frame, the s
 4. Transactions must be settled
 5. Transactions must be towards the "OUT" direction
 
+<!-- TOC --><a name="requirements"></a>
 ## Requirements
 
 Excerpt from PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
@@ -68,6 +98,7 @@ The new API must combine the logic of round-up and savings, so a variable amount
 
 ![recurring-transfer-api](./docs/images/recurring-transfer-api.png)
 
+<!-- TOC --><a name="show-me-the-data"></a>
 ## Show me the data
 
 A FeedItem looks as follows:
@@ -105,6 +136,7 @@ public class CurrencyAndAmount {
 }
 ```
 
+<!-- TOC --><a name="show-me-the-solution"></a>
 ## Show me the solution
 
 The solution is relatively easy to implement.
@@ -193,6 +225,7 @@ public SavingsGoalTransferResponseV2 transferToSavingsGoal(
 
 There is some room for improvement around the Starling specific data relating to exchange rates.
 
+<!-- TOC --><a name="requirements-summary"></a>
 ## Requirements Summary
 
 Given the following input parameters:
@@ -202,6 +235,7 @@ Given the following input parameters:
 
 Enumerate all transactions in a week. For each transaction calculate the round-up. Sum the list of round-ups. Transfer sum to savings goal.
 
+<!-- TOC --><a name="checklist-for-rubric"></a>
 ## Checklist For Rubric
 
 Below outlines some requirements to score points in the interview.
@@ -224,6 +258,7 @@ Below outlines some requirements to score points in the interview.
 16. Postman collection - YES
 17. Docker runtime - YES
 
+<!-- TOC --><a name="dependencies"></a>
 ## Dependencies
 
 Install Java 17
@@ -233,6 +268,7 @@ foo@bar:~$ wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.
 foo@bar:~$ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 ```
 
+<!-- TOC --><a name="docker"></a>
 ## Docker
 
 You can launch one of the precompiled [release](https://github.com/hughpearse/starling-interview-challenge/releases/) jars with docker:
@@ -247,6 +283,7 @@ or build from source with Docker and launch with Docker (easiest)
 foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get update && apt-get install -y git && git clone https://github.com/hughpearse/starling-interview-challenge.git /tmp/starling-interview-challenge && cd /tmp/starling-interview-challenge/ && /tmp/starling-interview-challenge/gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"'
 ```
 
+<!-- TOC --><a name="manual-build-steps"></a>
 ## Manual Build Steps
 
 Run the following command to build the classes
@@ -261,6 +298,7 @@ Run the following command to release the jar
 foo@bar:starling-interview-challenge$ ./gradlew jar
 ```
 
+<!-- TOC --><a name="manual-launch-steps"></a>
 ## Manual Launch Steps
 
 Run the following command to start the application locally 
@@ -269,6 +307,7 @@ Run the following command to start the application locally
 foo@bar:starling-interview-challenge$ ./gradlew bootRun
 ```
 
+<!-- TOC --><a name="unit-tests"></a>
 ## Unit Tests
 
 Run the following command to run junit tests
@@ -277,6 +316,7 @@ Run the following command to run junit tests
 foo@bar:starling-interview-challenge$ ./gradlew test
 ```
 
+<!-- TOC --><a name="consuming"></a>
 ## Consuming:
 
 Send a post body similar to:
@@ -307,6 +347,7 @@ http://localhost:8080/swagger-ui/index.html
 
 ![frontend](./docs/images/frontend-swagger.png)
 
+<!-- TOC --><a name="sample-logging-output"></a>
 ## Sample Logging output
 
 ```text
@@ -323,6 +364,7 @@ http://localhost:8080/swagger-ui/index.html
 2023-12-18T16:43:38.568Z  INFO 17704 --- [nio-8080-exec-2] c.s.c.d.s.starling.SavingsGoalService    : Transfer completed.
 ```
 
+<!-- TOC --><a name="application-properties"></a>
 ## Application Properties
 
 The application runtime properties are set [here](./src/main/resources/application.yaml)
@@ -336,6 +378,7 @@ outboundclients:
 
 You can easily set this property at runtime as a command line argument, as shown in the examples above.
 
+<!-- TOC --><a name="security-considerations"></a>
 ## Security considerations
 
 The access token is set in the application [here](./src/main/java/com/starling/challenge/outboundclients/starling/BaseHttpClient.java). An attempt has been made in the starling challenge codebase to keep the access token set as a character array which will place the values on the JVM stack, instead of in heap memory. If the application crashes, hopefully the value will not be serialized to disk.
@@ -362,12 +405,14 @@ public BaseHttpClient(
 }
 ```
 
+<!-- TOC --><a name="bugs"></a>
 ## Bugs
 
 1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
 2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
 3. In swagger docs for SavingsGoalRequestV2, there is both a currency variable and target.currency variable.
 
+<!-- TOC --><a name="external-references"></a>
 # External References
 
 1. PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
