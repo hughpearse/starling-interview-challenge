@@ -252,11 +252,13 @@ There is some room for improvement around the Starling specific data relating to
 <!-- TOC --><a name="how-it-works-architecture"></a>
 ## How it works - Architecture
 
-1. A base HTTP client is configured for the Starling server hostname.
-2. Each logical domain is assigned its own client (accounts, transactions etc) with URLs configured.
-3. Each logical domain client is assigned a domain service (eg: get account -> or create account if doesnt exist)
-4. The client logic is in a saparate logical domain (eg: roundup service)
-5. The controller routes traffic to the roundup service which starts the whole process
+0. An external user sends a request
+1. Layer 1: The controller routes traffic to the roundup service which starts the whole process
+2. Layer 2: The client logic is in a saparate logical domain (eg: roundup service)
+3. Layer 3: Each logical domain is assigned a domain service (eg: get account -> or create account if doesnt exist)
+4. Layer 4: Each domain service is assigned its own client (accounts, transactions etc) with URLs configured to interact with external systems.
+5. Layer 5: A base HTTP client is configured for the Starling server hostname.
+6. The HTTP traffic is sent to the external Starling services.
 
 ![class-diagram](./docs/images/classdiagram.png)
 
