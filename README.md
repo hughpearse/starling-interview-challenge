@@ -2,7 +2,6 @@
 
 - [Getting Started](#getting-started)
    * [Cloning the repo](#cloning-the-repo)
-   * [How it works](#how-it-works)
    * [Assumptions](#assumptions)
 - [Requirements](#requirements)
    * [Show me the data](#show-me-the-data)
@@ -10,6 +9,7 @@
    * [Checklist For Rubric](#checklist-for-rubric)
 - [Implementation](#implementation)
    * [Show me the solution](#show-me-the-solution)
+   * [How it works - Architecture](#how-it-works-architecture)
    * [Dependencies](#dependencies)
    * [Docker](#docker)
    * [Manual Build Steps](#manual-build-steps)
@@ -35,19 +35,6 @@ Below project outlines an attempt by Hugh Pearse to complete the Starling Bank i
 ```bash
 foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.git
 ```
-
-<!-- TOC --><a name="how-it-works"></a>
-## How it works
-
-1. A base HTTP client is configured for the Starling server hostname.
-2. Each logical domain is assigned its own client (accounts, transactions etc) with URLs configured.
-3. Each logical domain client is assigned a domain service (eg: get account -> or create account if doesnt exist)
-4. The client logic is in a saparate logical domain (eg: roundup service)
-5. The controller routes traffic to the roundup service which starts the whole process
-
-![class-diagram](./docs/images/classdiagram.png)
-
-This architecture should be resilient enough to require minimal changes for future requirements.
 
 <!-- TOC --><a name="assumptions"></a>
 ## Assumptions
@@ -261,6 +248,19 @@ public SavingsGoalTransferResponseV2 transferToSavingsGoal(
 ```
 
 There is some room for improvement around the Starling specific data relating to exchange rates.
+
+<!-- TOC --><a name="how-it-works-architecture"></a>
+## How it works - Architecture
+
+1. A base HTTP client is configured for the Starling server hostname.
+2. Each logical domain is assigned its own client (accounts, transactions etc) with URLs configured.
+3. Each logical domain client is assigned a domain service (eg: get account -> or create account if doesnt exist)
+4. The client logic is in a saparate logical domain (eg: roundup service)
+5. The controller routes traffic to the roundup service which starts the whole process
+
+![class-diagram](./docs/images/classdiagram.png)
+
+This architecture should be resilient enough to require minimal changes for future requirements.
 
 <!-- TOC --><a name="dependencies"></a>
 ## Dependencies
