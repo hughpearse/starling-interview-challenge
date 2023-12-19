@@ -18,7 +18,7 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 ![class-diagram](./docs/images/classdiagram.png)
 
-The roundup logic is defined in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There is some room for improvement around the Starling specific data relating to exchange rates.
+This architecture should be resilient enough to require minimal changes for future requirements.
 
 ## Assumptions
 
@@ -109,6 +109,27 @@ public class CurrencyAndAmount {
 
 The solution is relatively easy to implement.
 
+Get the transactions for a given week [here](./src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
+
+```java
+public FeedItems getTransactionFeedForWeek(
+    AccountV2 account,
+    Date weekStarting
+    ) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(weekStarting);
+    calendar.add(Calendar.DATE, 7);
+    Date weekEnding = calendar.getTime();
+    FeedItems transactionFeed = getTransactionFeed(
+        account, 
+        weekStarting, 
+        weekEnding);
+    return transactionFeed;
+}
+```
+
+Do the roundup [here](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java)
+
 ```java
 /**
  * Sum the list of roundups in a list of feed items.
@@ -152,7 +173,25 @@ private BigInteger roundup(BigInteger transaction) {
 }
 ```
 
-But the secret to passing an interview also requires good architecture :)
+Transfer to the saviings goal [here](./src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
+
+```java
+public SavingsGoalTransferResponseV2 transferToSavingsGoal(
+    AccountV2 account,
+    UUID savingsGoalUUID, 
+    TopUpRequestV2 topUpRequestV2
+    ){
+        SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalsClient.transferToSavingsGoal(
+        account.getAccountUid(), 
+        savingsGoalUUID, 
+        UUID.randomUUID(), 
+        topUpRequestV2);
+        log.info("Transfer completed.");
+        return transferToSavingsGoal;
+}
+```
+
+There is some room for improvement around the Starling specific data relating to exchange rates.
 
 ## Requirements Summary
 
