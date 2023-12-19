@@ -1,4 +1,6 @@
 @startuml
+allowmixing
+actor User
 class RetroactiveRoundupController
 class RoundupServiceImpl
 class AccountsService
@@ -8,7 +10,12 @@ class AccountsClient
 class SavingsGoalsClient
 class TransactionFeedClient
 class BaseHttpClient
+skinparam component {
+  BackgroundColor #Technology
+}
+component "Starling Sandbox" as HTTPServer <<HTTPServer>>
 
+User --> RetroactiveRoundupController: connects to
 RetroactiveRoundupController --> RoundupServiceImpl : routes traffic to
 RoundupServiceImpl --> AccountsService : uses
 RoundupServiceImpl --> SavingsGoalService : uses
@@ -19,5 +26,5 @@ TransactionFeedService --> TransactionFeedClient : uses
 AccountsClient --> BaseHttpClient : uses
 SavingsGoalsClient --> BaseHttpClient : uses
 TransactionFeedClient --> BaseHttpClient : uses
+BaseHttpClient --> HTTPServer : connects to
 @enduml
-
