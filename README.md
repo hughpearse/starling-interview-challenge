@@ -85,6 +85,7 @@ A FeedItem looks as follows:
   "direction": "OUT", //Enum: [ IN, OUT ]
   "status": "SETTLED", //Enum: [ UPCOMING, PENDING, REVERSED, SETTLED, DECLINED, REFUNDED, RETRYING, ACCOUNT_CHECK ]
   "exchangeRate": 0,
+  <a bunch of other stuff>
 }
 ```
 
