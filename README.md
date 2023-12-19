@@ -87,7 +87,6 @@ Enumerate all transactions in that week, and for each transaction calculate the 
 Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
 1. A savings goal called "Holidays" will be created
 2. Transactions with specific criteria will be settled
-3. GBP currency
 4. Transactions must be settled
 5. Transactions must be towards the "OUT" direction
 
