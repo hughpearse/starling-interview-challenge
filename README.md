@@ -323,6 +323,45 @@ http://localhost:8080/swagger-ui/index.html
 2023-12-18T16:43:38.568Z  INFO 17704 --- [nio-8080-exec-2] c.s.c.d.s.starling.SavingsGoalService    : Transfer completed.
 ```
 
+## Application Properties
+
+The application runtime properties are set [here](./src/main/resources/application.yaml)
+
+```yaml
+outboundclients:
+  starling:
+    core:
+      accesstoken: YOUR-JWT-HERE
+```
+
+You can easily set this property at runtime as a command line argument, as shown in the examples above.
+
+## Security considerations
+
+The access token is set in the application [here](./src/main/java/com/starling/challenge/outboundclients/starling/BaseHttpClient.java). An attempt has been made in the starling challenge codebase to keep the access token set as a character array which will place the values on the JVM stack, instead of in heap memory. If the application crashes, hopefully the value will not be serialized to disk.
+
+```java
+/**
+ * Constructor for Starling base auth HTTP client.
+ * @param starlingbaseurl injected base hostname
+ * @param accesstoken injected access token for Bearer auth
+ * @param restClientBuilder injected HTTP client object
+ */
+public BaseHttpClient(
+    @Value("${outboundclients.starling.core.baseurl}")
+    String starlingbaseurl,
+    @Value("${outboundclients.starling.core.accesstoken}")
+    char[] accesstoken, // <-----  HERE
+    RestClient.Builder restClientBuilder
+){
+    this.restClient = restClientBuilder
+    .baseUrl(starlingbaseurl)
+    .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + String.valueOf(accesstoken))
+    .defaultHeader(HttpHeaders.USER_AGENT, "Hugh Pearse")
+    .build();
+}
+```
+
 ## Bugs
 
 1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
