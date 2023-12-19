@@ -56,7 +56,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         // Get account details
         AccountV2 accountFound = accountsService.getAccount(roundupRequest.getAccountname());
 
-        // Get savings goal or create new savings goal if not exist yet
+        // Get savings goal or create new savings goal if it does not exist yet
         UUID savingsGoalUUID = null;
         if(null != accountFound){
             savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(accountFound, roundupRequest.getGoalName());

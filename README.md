@@ -10,15 +10,15 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 ## How it works
 
-1. A base HTTP client is configured for the hostname.
+1. A base HTTP client is configured for the Starling server hostname.
 2. Each logical domain is assigned its own client (accounts, transactions etc) with URLs configured.
 3. Each logical domain client is assigned a domain service (eg: get account -> or create account if doesnt exist)
 4. The client logic is in a saparate logical domain (eg: roundup service)
 5. The controller routes traffic to the roundup service which starts the whole process
 
-![class-diagram](./docs/classdiagram.png)
+![class-diagram](./docs/images/classdiagram.png)
 
-The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a some room for improvement around the Starling specific data relating to exchange rates and summing the roundup overflow.
+The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There is some room for improvement around the Starling specific data relating to exchange rates.
 
 ## Assumptions
 
@@ -52,19 +52,20 @@ which provide an sdk for interacting with our api.
 
 Notes: Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This challenge is a new type of round-up API.
 
-![roundup-api](./docs/roundup-api.png)
+![roundup-api](./docs/images/roundup-api.png)
 
 and neither does the savings goal API
 
-![savings-goal-api](./docs/savings-goal-api.png)
+![savings-goal-api](./docs/images/savings-goal-api.png)
 
 The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week. This differs from a recurring transfer which takes a fixed value.
 
-![recurring-transfer-api](./docs/recurring-transfer-api.png)
+![recurring-transfer-api](./docs/images/recurring-transfer-api.png)
 
 ## Show me the data
 
 A FeedItem looks as follows:
+
 ```json
 {
   "amount": {
@@ -93,7 +94,7 @@ public class FeedItem {
 }
 public class CurrencyAndAmount {
     private String currency;
-    private int minorUnits;    
+    private int minorUnits; // note this might overflow, use BigInt
 }
 ```
 
@@ -188,7 +189,7 @@ foo@bar:~$ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 
 ## Docker
 
-If you cant be bothered installing java 17 locally, launch one of the precompiled [release](https://github.com/hughpearse/starling-interview-challenge/releases/) jars with docker:
+You can launch one of the precompiled [release](https://github.com/hughpearse/starling-interview-challenge/releases/) jars with docker:
 
 ```bash
 foo@bar:starling-interview-challenge$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar  --outboundclients.starling.core.accesstoken=eyJhbGciOiJ
@@ -252,13 +253,13 @@ foo@bar:~$ curl -X POST -H "Content-Type: application/json" -d '{
 
 There is a provided postman collection [here](./docs/Starling-interview-challenge.postman_collection.json)
 
-![postman-image](./docs/testing.png)
+![postman-image](./docs/images/testing.png)
 
 and a frontend when the server is running
 
 http://localhost:8080/swagger-ui/index.html
 
-![frontend](./docs/frontend-swagger.png)
+![frontend](./docs/images/frontend-swagger.png)
 
 ## Sample Logging output
 
@@ -282,9 +283,9 @@ http://localhost:8080/swagger-ui/index.html
 2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
 3. In swagger docs for SavingsGoalRequestV2, there is both a currency variable and target.currency variable.
 
-# References
+# External References
 
 1. PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
 2. Documentation [here](https://developer.starlingbank.com/docs)
-3. Swagger json [here](./docs/starling-swagger.json)
+3. Starling Swagger json [here](./docs/starling-swagger.json)
 4. Prior art research [here](https://github.com/Noah-Vincenz/starling-api-round-up/tree/main)
