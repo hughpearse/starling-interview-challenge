@@ -18,7 +18,7 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 ![class-diagram](./docs/images/classdiagram.png)
 
-The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There is some room for improvement around the Starling specific data relating to exchange rates.
+The roundup logic is defined in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There is some room for improvement around the Starling specific data relating to exchange rates.
 
 ## Assumptions
 
