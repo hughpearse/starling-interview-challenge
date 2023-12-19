@@ -1,6 +1,6 @@
 # Getting Started
 
-Below project outlines an attempt by Hugh Pearse to complete the Starling Bank interview programming challenge.
+Below project outlines an attempt by Hugh Pearse to complete the Starling Bank interview programming challenge. Focus of development was to showcase good java design principals.
 
 ## Cloning the repo
 
