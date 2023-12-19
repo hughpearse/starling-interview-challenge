@@ -59,12 +59,6 @@ We do expect to see your working here: please do not use any of the libraries ou
 which provide an sdk for interacting with our api.
 ```
 
-Source code implementing above API calls can be found here:
-
-1. Accounts - [link](src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
-2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
-3. Savings Goals - [link](src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
-
 Notes: Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This challenge is a new type of round-up API.
 
 ![roundup-api](./docs/images/roundup-api.png)
@@ -152,6 +146,12 @@ Below outlines some requirements to score points in the interview.
 # Implementation
 
 The solution is relatively easy to implement.
+
+Source code implementing above API calls can be found here:
+
+1. Accounts - [link](src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
+2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
+3. Savings Goals - [link](src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
 
 <!-- TOC --><a name="assumptions"></a>
 ## Assumptions
@@ -319,6 +319,11 @@ Run the following command to run junit tests
 ```bash
 foo@bar:starling-interview-challenge$ ./gradlew test
 ```
+
+Code can be found here:
+1. [AccountServiceTest](./src/test/java/com/starling/challenge/domain/services/starling/AccountServiceTest.java)
+2. [SavingsGoalServiceTest](./src/test/java/com/starling/challenge/domain/services/starling/SavingsGoalServiceTest.java)
+3. [TransactionFeedServiceTest](./src/test/java/com/starling/challenge/domain/services/starling/TransactionFeedServiceTest.java)
 
 <!-- TOC --><a name="consuming-the-new-round-up-api"></a>
 ## Consuming The New Round-Up API
