@@ -173,7 +173,7 @@ private BigInteger roundup(BigInteger transaction) {
 }
 ```
 
-Transfer to the saviings goal [here](./src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
+Transfer to the savings goal [here](./src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
 
 ```java
 public SavingsGoalTransferResponseV2 transferToSavingsGoal(
