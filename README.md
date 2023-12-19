@@ -100,7 +100,7 @@ Given the following input parameters:
 2. Goal name (eg: Holidays)
 3. Account name (eg: main current account)
 
-Enumerate all transactions in that week, and for each transaction calculate the roundup and sum the total.
+Enumerate all transactions in a week. For each transaction calculate the round-up. Sum the list of round-ups. Transfer sum to savings goal.
 
 ## Checklist for rubric
 
