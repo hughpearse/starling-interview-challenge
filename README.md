@@ -18,6 +18,16 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 ![class-diagram](./docs/classdiagram.png)
 
+The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a lot of room for improvement around the Starling specific data relating to currency type, and transaction type.
+
+## Assumptions
+
+Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
+1. A savings goal called "Holidays" will be created
+2. Transactions with specific criteria will be settled
+4. Transactions must be settled
+5. Transactions must be towards the "OUT" direction
+
 ## Requirements
 
 Excerpt from PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
@@ -91,16 +101,6 @@ Given the following input parameters:
 3. Account name (eg: main current account)
 
 Enumerate all transactions in that week, and for each transaction calculate the roundup and sum the total.
-
-## Assumptions
-
-Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
-1. A savings goal called "Holidays" will be created
-2. Transactions with specific criteria will be settled
-4. Transactions must be settled
-5. Transactions must be towards the "OUT" direction
-
-The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a lot of room for improvement around the Starling specific data relating to currency type, and transaction type.
 
 ## Checklist for rubric
 
