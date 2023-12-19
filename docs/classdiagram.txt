@@ -3,18 +3,28 @@ allowmixing
 actor User
 class RetroactiveRoundupController
 class RoundupServiceImpl
-class AccountsService
-class SavingsGoalService
-class TransactionFeedService
-class AccountsClient
-class SavingsGoalsClient
-class TransactionFeedClient
+package "Services" {
+  class AccountsService
+  class SavingsGoalService
+  class TransactionFeedService
+}
+package "Clients" {
+  class AccountsClient
+  class SavingsGoalsClient
+  class TransactionFeedClient
+}
 class BaseHttpClient
 skinparam component {
   BackgroundColor #Technology
 }
 component "Starling Sandbox" as HTTPServer <<HTTPServer>>
 
+note left of User: This is the user interacting with the system.
+note left of RetroactiveRoundupController: Layer 1: This class is responsible for handling user requests.
+note left of RoundupServiceImpl: Layer 2: This service routes traffic from the controller to the appropriate services.
+note left of Services: Layer 3: Handle specific functionalities related to accounts, savings goals, and transaction feeds.
+note left of Clients: Layer 4: Used by the services to interact with the underlying system or external systems.
+note left of BaseHttpClient: Layer 5: Base HTTP client used by all other clients for making HTTP requests.
 User --> RetroactiveRoundupController: connects to
 RetroactiveRoundupController --> RoundupServiceImpl : routes traffic to
 RoundupServiceImpl --> AccountsService : uses
@@ -27,4 +37,5 @@ AccountsClient --> BaseHttpClient : uses
 SavingsGoalsClient --> BaseHttpClient : uses
 TransactionFeedClient --> BaseHttpClient : uses
 BaseHttpClient --> HTTPServer : connects to
+
 @enduml
