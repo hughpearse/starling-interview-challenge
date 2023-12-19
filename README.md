@@ -202,7 +202,7 @@ Given the following input parameters:
 
 Enumerate all transactions in a week. For each transaction calculate the round-up. Sum the list of round-ups. Transfer sum to savings goal.
 
-## Checklist for rubric
+## Checklist For Rubric
 
 Below outlines some requirements to score points in the interview.
 
