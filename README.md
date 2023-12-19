@@ -2,12 +2,12 @@
 
 - [Getting Started](#getting-started)
    * [Cloning the repo](#cloning-the-repo)
-   * [Assumptions](#assumptions)
 - [Requirements](#requirements)
    * [Show me the data](#show-me-the-data)
    * [Requirements Summary](#requirements-summary)
    * [Checklist For Rubric](#checklist-for-rubric)
 - [Implementation](#implementation)
+   * [Assumptions](#assumptions)
    * [Show me the solution](#show-me-the-solution)
    * [How it works - Architecture](#how-it-works-architecture)
    * [Dependencies](#dependencies)
@@ -35,15 +35,6 @@ Below project outlines an attempt by Hugh Pearse to complete the Starling Bank i
 ```bash
 foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.git
 ```
-
-<!-- TOC --><a name="assumptions"></a>
-## Assumptions
-
-Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
-1. A savings goal called "Holidays" will be created
-2. Transactions with specific criteria will be settled
-4. Transactions must be settled
-5. Transactions must be towards the "OUT" direction
 
 <!-- TOC --><a name="requirements"></a>
 # Requirements
@@ -161,6 +152,15 @@ Below outlines some requirements to score points in the interview.
 # Implementation
 
 The solution is relatively easy to implement.
+
+<!-- TOC --><a name="assumptions"></a>
+## Assumptions
+
+Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
+1. A savings goal called "Holidays" will be created
+2. Transactions with specific criteria will be settled
+4. Transactions must be settled
+5. Transactions must be towards the "OUT" direction
 
 <!-- TOC --><a name="show-me-the-solution"></a>
 ## Show me the solution
