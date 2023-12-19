@@ -254,6 +254,12 @@ There is a provided postman collection [here](./docs/Starling-interview-challeng
 
 ![postman-image](./docs/testing.png)
 
+and a frontend when the server is running
+
+http://localhost:8080/swagger-ui/index.html
+
+![frontend](./docs/frontend-swagger.png)
+
 ## Sample Logging output
 
 ```text
