@@ -63,7 +63,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         }
 
         // Get settled transactions
-        FeedItems transactionFeed = transactionFeedService.getTransactionFeedForWeek(accountFound.getAccountUid(), roundupRequest.getWeekStarting());
+        FeedItems transactionFeed = transactionFeedService.getTransactionFeedForWeek(accountFound, roundupRequest.getWeekStarting());
         if(transactionFeed.getFeedItems().size()>0) log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
         
         // Sum the roundup of transations

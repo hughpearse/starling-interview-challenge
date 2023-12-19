@@ -1,8 +1,8 @@
 package com.starling.challenge.domain.services.starling;
 
 import java.util.Date;
-import java.util.UUID;
 
+import com.starling.challenge.domain.model.starling.AccountV2;
 import com.starling.challenge.domain.model.starling.FeedItems;
 
 /**
@@ -12,18 +12,18 @@ public interface TransactionFeedServiceInt {
 
     /**
      * Get transaction feed
-     * @param accountUid account UUID
+     * @param account the AccountV2 object
      * @param minTransactionTimestamp lower bound on time frame
      * @param maxTransactionTimestamp upper bound on time frame
      * @return the FeedItems object
      */
-    public FeedItems getTransactionFeed(UUID accountUid, Date weekStarting, Date weekEnding);
+    public FeedItems getTransactionFeed(AccountV2 account, Date weekStarting, Date weekEnding);
     
     /**
      * Get transaction feed for a week
-     * @param accountUid account UUID
+     * @param account the AccountV2 object
      * @param minTransactionTimestamp lower bound on time frame (starting day)
      * @return the FeedItems object
      */
-    public FeedItems getTransactionFeedForWeek(UUID accountUid, Date weekStarting);
+    public FeedItems getTransactionFeedForWeek(AccountV2 account, Date weekStarting);
 }

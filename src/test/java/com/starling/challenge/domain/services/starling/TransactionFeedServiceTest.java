@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.starling.challenge.domain.model.starling.AccountV2;
 import com.starling.challenge.domain.model.starling.BatchPaymentDetails;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
 import com.starling.challenge.domain.model.starling.FeedItem;
@@ -26,7 +28,13 @@ public class TransactionFeedServiceTest {
     @Test
     public void testGetTransactionFeedForWeek() {
         // Arrange: configure mock responses
-        UUID accountUid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        AccountV2 account = new AccountV2();
+        account.setAccountUid(UUID.randomUUID());
+        account.setAccountType("Savings");
+        account.setDefaultCategory("Personal");
+        account.setCurrency("GBP");
+        account.setCreatedAt("2023-12-19T12:30:28Z");
+        account.setName("Test Account");
         Date weekStarting = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(weekStarting);
@@ -59,12 +67,12 @@ public class TransactionFeedServiceTest {
 
         CurrencyAndAmount amount = new CurrencyAndAmount();
         amount.setCurrency("GBP");
-        amount.setMinorUnits(1000);
+        amount.setMinorUnits(BigInteger.valueOf(1000));
         testFeedItem.setAmount(amount);
 
         CurrencyAndAmount sourceAmount = new CurrencyAndAmount();
         sourceAmount.setCurrency("GBP");
-        sourceAmount.setMinorUnits(1000);
+        sourceAmount.setMinorUnits(BigInteger.valueOf(1000));
         testFeedItem.setSourceAmount(sourceAmount);
 
         BatchPaymentDetails batchPaymentDetails = new BatchPaymentDetails();
@@ -76,10 +84,10 @@ public class TransactionFeedServiceTest {
         testFeedItem.setHasReceipt(false);
 
         FeedItems testFeedItems = new FeedItems(Arrays.asList(testFeedItem));
-        when(transactionService.getTransactionFeedForWeek(accountUid, weekStarting)).thenReturn(testFeedItems);
+        when(transactionService.getTransactionFeedForWeek(account, weekStarting)).thenReturn(testFeedItems);
 
         // Act: perform the test
-        FeedItems result = transactionService.getTransactionFeedForWeek(accountUid, weekStarting);
+        FeedItems result = transactionService.getTransactionFeedForWeek(account, weekStarting);
 
         // Assert: check results
         assertNotNull(result, "FeedItems should not be null");
