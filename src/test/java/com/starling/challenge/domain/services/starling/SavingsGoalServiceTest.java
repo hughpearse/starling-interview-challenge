@@ -1,4 +1,4 @@
-package com.starling.challenge.outboundclients.services.starling;
+package com.starling.challenge.domain.services.starling;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
 import com.starling.challenge.domain.model.starling.SavingsGoalV2;
 import com.starling.challenge.domain.model.starling.SavingsGoalsV2;
-import com.starling.challenge.domain.services.starling.SavingsGoalService;
 import com.starling.challenge.outboundclients.starling.SavingsGoalsClient;
 
 @ExtendWith(MockitoExtension.class)
