@@ -42,6 +42,8 @@ which provide an sdk for interacting with our api.
 
 Notes: Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This is a new type of round-up API.
 
+![roundup-api](./docs/roundup-api.png)
+
 ## Show me the data
 
 A FeedItem looks as follows:
