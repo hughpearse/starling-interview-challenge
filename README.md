@@ -50,6 +50,12 @@ We do expect to see your working here: please do not use any of the libraries ou
 which provide an sdk for interacting with our api.
 ```
 
+Source code implementing above API calls can be found here:
+
+1. Accounts - [link](src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
+2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
+3. Savings Goals - [link](src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
+
 Notes: Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This challenge is a new type of round-up API.
 
 ![roundup-api](./docs/images/roundup-api.png)
