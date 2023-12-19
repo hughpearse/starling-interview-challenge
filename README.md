@@ -46,9 +46,11 @@ Notes: Existing Round-up API does *NOT* allow user to specify input parameter fo
 
 and neither does the savings goal API
 
-![roundup-api](./docs/savings-goal-api.png)
+![savings-goal-api](./docs/savings-goal-api.png)
 
-The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week. This differs from a regular savings goal which is a fixed value.
+The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week. This differs from a recurring transfer which takes a fixed value.
+
+![recurring-transfer-api](./docs/recurring-transfer-api.png)
 
 ## Show me the data
 
