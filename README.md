@@ -60,6 +60,8 @@ Given the complex nature of these requirements and the limited time frame, the s
 4. Transactions must be settled
 5. Transactions must be towards the "OUT" direction
 
+The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a lot of room for improvement around the Starling specific data relating to currency type, and transaction type.
+
 ## Checklist for rubric
 
 Below outlines some requirements to score points in the interview.
