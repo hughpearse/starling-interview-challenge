@@ -44,6 +44,10 @@ Notes: Existing Round-up API does *NOT* allow user to specify input parameter fo
 
 ![roundup-api](./docs/roundup-api.png)
 
+and neither does the savings goal API
+
+![roundup-api](./docs/savings-goal-api.png)
+
 ## Show me the data
 
 A FeedItem looks as follows:
