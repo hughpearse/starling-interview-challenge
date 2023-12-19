@@ -48,6 +48,8 @@ and neither does the savings goal API
 
 ![roundup-api](./docs/savings-goal-api.png)
 
+The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week. This differs from a regular savings goal which is a fixed value.
+
 ## Show me the data
 
 A FeedItem looks as follows:
