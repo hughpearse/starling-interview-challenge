@@ -15,7 +15,7 @@
    * [Manual Build Steps](#manual-build-steps)
    * [Manual Launch Steps](#manual-launch-steps)
    * [Unit Tests](#unit-tests)
-   * [Consuming:](#consuming)
+   * [Consuming The New Round-Up API](#consuming-the-new-round-up-api)
    * [Sample Logging output](#sample-logging-output)
    * [Application Properties](#application-properties)
    * [Security considerations](#security-considerations)
@@ -320,8 +320,8 @@ Run the following command to run junit tests
 foo@bar:starling-interview-challenge$ ./gradlew test
 ```
 
-<!-- TOC --><a name="consuming"></a>
-## Consuming:
+<!-- TOC --><a name="consuming-the-new-round-up-api"></a>
+## Consuming The New Round-Up API
 
 Send a post body similar to:
 ```json
