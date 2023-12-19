@@ -91,6 +91,10 @@ public class FeedItem {
     private String status;
     private double exchangeRate;
 }
+public class CurrencyAndAmount {
+    private String currency;
+    private int minorUnits;    
+}
 ```
 
 ## Requirements Summary

@@ -1,4 +1,5 @@
 package com.starling.challenge.domain.services.challenge;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +59,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         // Get savings goal or create new savings goal if not exist yet
         UUID savingsGoalUUID = null;
         if(null != accountFound){
-            savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(accountFound.getAccountUid(), roundupRequest.getGoalName());
+            savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(accountFound, roundupRequest.getGoalName());
         }
 
         // Get settled transactions
@@ -66,23 +67,23 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         if(transactionFeed.getFeedItems().size()>0) log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
         
         // Sum the roundup of transations
-        Long roundupSum = sumFeedItems(transactionFeed, accountFound);
+        BigInteger roundupSum = sumFeedItems(transactionFeed, accountFound);
 
         // Add roundup sum to savings goal
         RoundupResponse roundupResponse = new RoundupResponse();
-        if(roundupSum == 0l){
+        if(roundupSum.equals(BigInteger.ZERO)){
             SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
             savingsGoalTransferResponseV2.setSuccess(false);
             UUID emptyUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
             savingsGoalTransferResponseV2.setTransferUid(emptyUUID);
             log.info("Transfer cancelled.");
             roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
-            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), 0));
+            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), BigInteger.ZERO));
             return roundupResponse;
         }
-        CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum.intValue());
+        CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum);
         TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
-        SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(accountFound.getAccountUid(), savingsGoalUUID, topUpRequestV2);
+        SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(accountFound, savingsGoalUUID, topUpRequestV2);
         roundupResponse.setTransferToSavingsGoal(transferToSavingsGoal);
         roundupResponse.setCurrencyAndAmount(currencyAndAmount);
         return roundupResponse;
@@ -92,11 +93,11 @@ public class RoundupServiceImpl implements RoundupServiceInt {
      * Sum the list of roundups in a list of feed items.
      * @param transactionFeed FeedItems object as a FeedItems object
      * @param account the account detils as a AccountV2 object
-     * @return Long of sum of roundups as a Long
+     * @return sum of roundups as a BigInteger
      */
-    private Long sumFeedItems(FeedItems transactionFeed, AccountV2 account){
+    private BigInteger sumFeedItems(FeedItems transactionFeed, AccountV2 account){
         List<FeedItem> feedItems = transactionFeed.getFeedItems();
-        Long roundupSum = 0L;
+        BigInteger roundupSum = BigInteger.ZERO;
         for(FeedItem feedItem : feedItems){
             if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
                 
@@ -107,29 +108,26 @@ public class RoundupServiceImpl implements RoundupServiceInt {
                 if(feedItem.getSourceAmount().getCurrency().equals(account.getCurrency()));
                 amount = feedItem.getSourceAmount();
 
-                try {
-                    roundupSum = Math.addExact(roundupSum, roundup(amount.getMinorUnits()));
-                } catch (ArithmeticException e) {
-                    log.error("Overflow occurred while summing up the roundups", e);
-                }
+                roundupSum = roundupSum.add(roundup(amount.getMinorUnits()));
             }
         }
         log.info("Sum of roundup is {} minor units.", roundupSum);
         return roundupSum;
     }
-    
+
 
     /**
      * Roundup logic using modulo.
      * @param transaction input the minor units.
      * @return the rounded up value.
      */
-    private int roundup(int transaction) {
-        int remainder = transaction % 100;
-        if (remainder == 0) {
-            return 0;
+    private BigInteger roundup(BigInteger transaction) {
+        BigInteger hundred = new BigInteger("100");
+        BigInteger remainder = transaction.mod(hundred);
+        if (remainder.equals(BigInteger.ZERO)) {
+            return BigInteger.ZERO;
         } else {
-            return 100 - remainder;
+            return hundred.subtract(remainder);
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.starling.challenge.domain.model.starling;
 
+import java.math.BigInteger;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CurrencyAndAmount {
     private String currency;
-    private int minorUnits;    
+    private BigInteger minorUnits;    
 }
