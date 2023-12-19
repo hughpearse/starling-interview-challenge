@@ -165,8 +165,8 @@ Below outlines some requirements to score points in the interview.
 4. Automated tests - YES
 5. Arrange Act Assert (AAA) - YES
 6. Documentation - YES
-7. Javadoc (code) - YES
-8. Swagger (inbound API) - TODO
+7. Javadoc (code, not HTML due to annotations) - YES
+8. Swagger (inbound API) - YES
 9. README instructions - YES
 10. Code quality - YES
 11. Domain Driven Design (DDD) - YES
