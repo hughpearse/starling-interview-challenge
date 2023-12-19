@@ -188,19 +188,19 @@ foo@bar:~$ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 
 ## Docker
 
-If you cant be bothered installing java 17 locally, launch one of the [release](https://github.com/hughpearse/starling-interview-challenge/releases/) jars with docker:
+If you cant be bothered installing java 17 locally, launch one of the precompiled [release](https://github.com/hughpearse/starling-interview-challenge/releases/) jars with docker:
 
 ```bash
 foo@bar:starling-interview-challenge$ docker run -p 8080:8080 -v $(pwd)/build/libs/challenge-0.0.1-SNAPSHOT.jar:/app.jar eclipse-temurin:17.0.9_9-jre-jammy java -jar /app.jar  --outboundclients.starling.core.accesstoken=eyJhbGciOiJ
 ```
 
-or build from source and launch with Docker
+or build from source with Docker and launch with Docker (easiest)
 
 ```bash
 foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get update && apt-get install -y git && git clone https://github.com/hughpearse/starling-interview-challenge.git /tmp/starling-interview-challenge && cd /tmp/starling-interview-challenge/ && /tmp/starling-interview-challenge/gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"'
 ```
 
-## Build
+## Manual Build Steps
 
 Run the following command to build the classes
 
@@ -214,7 +214,7 @@ Run the following command to release the jar
 foo@bar:starling-interview-challenge$ ./gradlew jar
 ```
 
-## Launch
+## Manual Launch Steps
 
 Run the following command to start the application locally 
 
@@ -222,7 +222,7 @@ Run the following command to start the application locally
 foo@bar:starling-interview-challenge$ ./gradlew bootRun
 ```
 
-## Tests
+## Unit Tests
 
 Run the following command to run junit tests
 
