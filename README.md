@@ -40,7 +40,7 @@ We do expect to see your working here: please do not use any of the libraries ou
 which provide an sdk for interacting with our api.
 ```
 
-Notes: implementation should be enterprise grade
+Notes: Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This is a new type of round-up API.
 
 ## Show me the data
 
