@@ -4,11 +4,12 @@
    * [Cloning the repo](#cloning-the-repo)
    * [How it works](#how-it-works)
    * [Assumptions](#assumptions)
-   * [Requirements](#requirements)
+- [Requirements](#requirements)
    * [Show me the data](#show-me-the-data)
-   * [Show me the solution](#show-me-the-solution)
    * [Requirements Summary](#requirements-summary)
    * [Checklist For Rubric](#checklist-for-rubric)
+- [Implementation](#implementation)
+   * [Show me the solution](#show-me-the-solution)
    * [Dependencies](#dependencies)
    * [Docker](#docker)
    * [Manual Build Steps](#manual-build-steps)
@@ -58,7 +59,7 @@ Given the complex nature of these requirements and the limited time frame, the s
 5. Transactions must be towards the "OUT" direction
 
 <!-- TOC --><a name="requirements"></a>
-## Requirements
+# Requirements
 
 Excerpt from PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
 
@@ -136,10 +137,46 @@ public class CurrencyAndAmount {
 }
 ```
 
-<!-- TOC --><a name="show-me-the-solution"></a>
-## Show me the solution
+<!-- TOC --><a name="requirements-summary"></a>
+## Requirements Summary
+
+Given the following input parameters:
+1. Date week start (eg: Sunday 1st January 2023, ending @ + 7 days)
+2. Goal name (eg: Holidays)
+3. Account name (eg: main current account)
+
+Enumerate all transactions in a week. For each transaction calculate the round-up. Sum the list of round-ups. Transfer sum to savings goal.
+
+<!-- TOC --><a name="checklist-for-rubric"></a>
+## Checklist For Rubric
+
+Below outlines some requirements to score points in the interview.
+
+1. Compiles - YES
+2. Launches/Runs - YES
+3. Works as expected - YES
+4. Automated tests - YES
+5. Arrange Act Assert (AAA) - YES
+6. Documentation - YES
+7. Javadoc (code, not HTML due to annotations) - YES
+8. Swagger (inbound API) - YES
+9. README instructions - YES
+10. Code quality - YES
+11. Domain Driven Design (DDD) - YES
+12. Application of SOLID principals - YES
+13. Error handling - YES
+14. Logging - YES
+15. Builds to jar - YES
+16. Postman collection - YES
+17. Docker runtime - YES
+
+<!-- TOC --><a name="implementation"></a>
+# Implementation
 
 The solution is relatively easy to implement.
+
+<!-- TOC --><a name="show-me-the-solution"></a>
+## Show me the solution
 
 Get the transactions for a given week [here](./src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
 
@@ -224,39 +261,6 @@ public SavingsGoalTransferResponseV2 transferToSavingsGoal(
 ```
 
 There is some room for improvement around the Starling specific data relating to exchange rates.
-
-<!-- TOC --><a name="requirements-summary"></a>
-## Requirements Summary
-
-Given the following input parameters:
-1. Date week start (eg: Sunday 1st January 2023, ending @ + 7 days)
-2. Goal name (eg: Holidays)
-3. Account name (eg: main current account)
-
-Enumerate all transactions in a week. For each transaction calculate the round-up. Sum the list of round-ups. Transfer sum to savings goal.
-
-<!-- TOC --><a name="checklist-for-rubric"></a>
-## Checklist For Rubric
-
-Below outlines some requirements to score points in the interview.
-
-1. Compiles - YES
-2. Launches/Runs - YES
-3. Works as expected - YES
-4. Automated tests - YES
-5. Arrange Act Assert (AAA) - YES
-6. Documentation - YES
-7. Javadoc (code, not HTML due to annotations) - YES
-8. Swagger (inbound API) - YES
-9. README instructions - YES
-10. Code quality - YES
-11. Domain Driven Design (DDD) - YES
-12. Application of SOLID principals - YES
-13. Error handling - YES
-14. Logging - YES
-15. Builds to jar - YES
-16. Postman collection - YES
-17. Docker runtime - YES
 
 <!-- TOC --><a name="dependencies"></a>
 ## Dependencies
