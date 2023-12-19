@@ -75,7 +75,7 @@ A FeedItem looks as follows:
     "currency": "GBP", //ISO-4217 3 character currency code
     "minorUnits": 123456
   },
-  "direction": "IN", //Enum: [ IN, OUT ]
+  "direction": "OUT", //Enum: [ IN, OUT ]
   "status": "SETTLED", //Enum: [ UPCOMING, PENDING, REVERSED, SETTLED, DECLINED, REFUNDED, RETRYING, ACCOUNT_CHECK ]
   "exchangeRate": 0,
 }
@@ -96,6 +96,55 @@ public class CurrencyAndAmount {
     private int minorUnits;    
 }
 ```
+
+## Show me the solution
+
+The solution is relatively easy to implement.
+
+```java
+/**
+ * Sum the list of roundups in a list of feed items.
+ * @param transactionFeed FeedItems object as a FeedItems object
+ * @param account the account detils as a AccountV2 object
+ * @return sum of roundups as a BigInteger
+ */
+private BigInteger sumFeedItems(FeedItems transactionFeed, AccountV2 account){
+    List<FeedItem> feedItems = transactionFeed.getFeedItems();
+    BigInteger roundupSum = BigInteger.ZERO;
+    for(FeedItem feedItem : feedItems){
+        if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
+            
+            // Find correct amount based on account settings
+            CurrencyAndAmount amount = null;
+            if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
+            amount = feedItem.getAmount();
+            if(feedItem.getSourceAmount().getCurrency().equals(account.getCurrency()));
+            amount = feedItem.getSourceAmount();
+
+            roundupSum = roundupSum.add(roundup(amount.getMinorUnits()));
+        }
+    }
+    log.info("Sum of roundup is {} minor units.", roundupSum);
+    return roundupSum;
+}
+
+/**
+ * Roundup logic using modulo.
+ * @param transaction input the minor units.
+ * @return the rounded up value.
+ */
+private BigInteger roundup(BigInteger transaction) {
+    BigInteger hundred = new BigInteger("100");
+    BigInteger remainder = transaction.mod(hundred);
+    if (remainder.equals(BigInteger.ZERO)) {
+        return BigInteger.ZERO;
+    } else {
+        return hundred.subtract(remainder);
+    }
+}
+```
+
+But the secret to passing an interview also requires good architecture :)
 
 ## Requirements Summary
 

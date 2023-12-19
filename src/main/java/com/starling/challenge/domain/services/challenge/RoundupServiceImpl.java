@@ -100,7 +100,6 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         BigInteger roundupSum = BigInteger.ZERO;
         for(FeedItem feedItem : feedItems){
             if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
-                
                 // Find correct amount based on account settings
                 CurrencyAndAmount amount = null;
                 if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
@@ -114,7 +113,6 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         log.info("Sum of roundup is {} minor units.", roundupSum);
         return roundupSum;
     }
-
 
     /**
      * Roundup logic using modulo.
