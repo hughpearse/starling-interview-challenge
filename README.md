@@ -18,7 +18,7 @@ foo@bar:~$ git clone https://github.com/hughpearse/starling-interview-challenge.
 
 ![class-diagram](./docs/classdiagram.png)
 
-The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a lot of room for improvement around the Starling specific data relating to currency type, and transaction type.
+The roundup logic is define in [RoundupServiceImpl.java](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java). There a some room for improvement around the Starling specific data relating to exchange rates and summing the roundup overflow.
 
 ## Assumptions
 
@@ -201,7 +201,7 @@ There is a provided postman collection [here](./docs/Starling-interview-challeng
 
 ![postman-image](./docs/testing.png)
 
-# Sample Logging output
+## Sample Logging output
 
 ```text
 2023-12-18T16:43:37.365Z  INFO 17704 --- [nio-8080-exec-2] c.s.c.d.s.challenge.RoundupServiceImpl   : Roundup request received.
@@ -217,7 +217,7 @@ There is a provided postman collection [here](./docs/Starling-interview-challeng
 2023-12-18T16:43:38.568Z  INFO 17704 --- [nio-8080-exec-2] c.s.c.d.s.starling.SavingsGoalService    : Transfer completed.
 ```
 
-# Bugs
+## Bugs
 
 1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
 2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
