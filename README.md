@@ -42,6 +42,37 @@ which provide an sdk for interacting with our api.
 
 Notes: implementation should be enterprise grade
 
+## Show me the data
+
+A FeedItem looks as follows:
+```json
+{
+  "amount": {
+    "currency": "GBP", //ISO-4217 3 character currency code
+    "minorUnits": 123456
+  },
+  "sourceAmount": {
+    "currency": "GBP", //ISO-4217 3 character currency code
+    "minorUnits": 123456
+  },
+  "direction": "IN", //Enum: [ IN, OUT ]
+  "status": "SETTLED", //Enum: [ UPCOMING, PENDING, REVERSED, SETTLED, DECLINED, REFUNDED, RETRYING, ACCOUNT_CHECK ]
+  "exchangeRate": 0,
+}
+```
+
+This can be represented as a java pojo:
+
+```java
+public class FeedItem {
+    private CurrencyAndAmount amount;
+    private CurrencyAndAmount sourceAmount;
+    private String direction;
+    private String status;
+    private double exchangeRate;
+}
+```
+
 ## Requirements Summary
 
 Given the following input parameters:

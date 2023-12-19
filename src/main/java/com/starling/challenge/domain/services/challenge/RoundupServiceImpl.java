@@ -66,7 +66,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         if(transactionFeed.getFeedItems().size()>0) log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
         
         // Sum the roundup of transations
-        Long roundupSum = sumFeedItems(transactionFeed);
+        Long roundupSum = sumFeedItems(transactionFeed, accountFound);
 
         // Add roundup sum to savings goal
         RoundupResponse roundupResponse = new RoundupResponse();
@@ -77,10 +77,10 @@ public class RoundupServiceImpl implements RoundupServiceInt {
             savingsGoalTransferResponseV2.setTransferUid(emptyUUID);
             log.info("Transfer cancelled.");
             roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
-            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount("GBP", 0));
+            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), 0));
             return roundupResponse;
         }
-        CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount("GBP", roundupSum.intValue());
+        CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum.intValue());
         TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
         SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(accountFound.getAccountUid(), savingsGoalUUID, topUpRequestV2);
         roundupResponse.setTransferToSavingsGoal(transferToSavingsGoal);
@@ -90,23 +90,34 @@ public class RoundupServiceImpl implements RoundupServiceInt {
 
     /**
      * Sum the list of roundups in a list of feed items.
-     * @param transactionFeed FeedItems object
-     * @return Long of sum of roundups
+     * @param transactionFeed FeedItems object as a FeedItems object
+     * @param account the account detils as a AccountV2 object
+     * @return Long of sum of roundups as a Long
      */
-    private Long sumFeedItems(FeedItems transactionFeed){
+    private Long sumFeedItems(FeedItems transactionFeed, AccountV2 account){
         List<FeedItem> feedItems = transactionFeed.getFeedItems();
-        Long roundupSum = 0l;
+        Long roundupSum = 0L;
         for(FeedItem feedItem : feedItems){
             if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
-                CurrencyAndAmount amount = feedItem.getAmount();
-                if(amount.getCurrency().equals("GBP")){
-                    roundupSum = roundupSum + roundup(amount.getMinorUnits());
+                
+                // Find correct amount based on account settings
+                CurrencyAndAmount amount = null;
+                if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
+                amount = feedItem.getAmount();
+                if(feedItem.getSourceAmount().getCurrency().equals(account.getCurrency()));
+                amount = feedItem.getSourceAmount();
+
+                try {
+                    roundupSum = Math.addExact(roundupSum, roundup(amount.getMinorUnits()));
+                } catch (ArithmeticException e) {
+                    log.error("Overflow occurred while summing up the roundups", e);
                 }
             }
         }
         log.info("Sum of roundup is {} minor units.", roundupSum);
         return roundupSum;
     }
+    
 
     /**
      * Roundup logic using modulo.
