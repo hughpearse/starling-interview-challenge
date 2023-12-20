@@ -362,7 +362,7 @@ http://localhost:8080/swagger-ui/index.html
 <!-- TOC --><a name="error-handling"></a>
 ## Error Handling
 
-Errors are parsed by the clients [here](./src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
+Upstream rrrors are parsed by the clients [here](./src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
 
 ```java
 /**
@@ -403,6 +403,21 @@ Then the challenge application creates a client error response [here](./src/main
     log.error("Client response error message: " + errorMsg.toString());
 }
 return responseEntity;
+```
+
+Request parsing errors do not reach the controller, and an informative message is generated [here](./src/main/java/com/starling/challenge/inboundapicontrollers/v1/RetroactiveRoundupController.java):
+
+```java
+@ExceptionHandler(HttpMessageNotReadableException.class)
+public ResponseEntity<ErrorResponse> handleValidationExceptions(
+HttpMessageNotReadableException ex) {
+    ErrorResponse errors = new ErrorResponse();
+    ErrorDetail errorDetail = new ErrorDetail();
+    errorDetail.setMessage(ex.getMessage());
+    errors.setErrors(Arrays.asList(errorDetail));
+    errors.setSuccess(false);
+    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+} 
 ```
 
 <!-- TOC --><a name="sample-logging-output"></a>

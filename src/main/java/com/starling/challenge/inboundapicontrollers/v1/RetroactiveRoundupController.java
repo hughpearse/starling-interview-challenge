@@ -1,17 +1,25 @@
 package com.starling.challenge.inboundapicontrollers.v1;
 
+import java.util.Arrays;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
+import com.starling.challenge.domain.model.starling.ErrorDetail;
+import com.starling.challenge.domain.model.starling.ErrorResponse;
 import com.starling.challenge.domain.services.challenge.RoundupServiceInt;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 /**
  * Router for directing HTTP requests to the appropriate logic.
@@ -39,10 +47,21 @@ public class RetroactiveRoundupController {
     })
     @RequestMapping(value = "/v1/retroactive-roundup", method = RequestMethod.POST)
     public ResponseEntity<?> roundUpForWeek(
+        @Valid
         @RequestBody
         RoundupRequest roundupRequest
     ){
         return roundupService.roundupForWeek(roundupRequest);
     }
-    
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+    HttpMessageNotReadableException ex) {
+        ErrorResponse errors = new ErrorResponse();
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setMessage(ex.getMessage());
+        errors.setErrors(Arrays.asList(errorDetail));
+        errors.setSuccess(false);
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }   
 }
