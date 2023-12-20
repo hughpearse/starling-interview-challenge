@@ -417,22 +417,6 @@ public Accounts getAccounts() {
 }
 ```
 
-Then the challenge application creates a client error response [here](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java).
-
-```java
-} catch (StarlingRuntimeException ex) {
-    ErrorResponse errorMsg = null;
-    try {
-        errorMsg = objectMapper.readValue(ex.getResponse().getBody(), ErrorResponse.class);
-        responseEntity = new ResponseEntity<>(errorMsg, ex.getResponse().getStatusCode());
-    } catch (Exception e) {
-        log.error("Error parsing client response: " + e.getMessage());
-    }
-    log.error("Client response error message: " + errorMsg.toString());
-}
-return responseEntity;
-```
-
 There are 3 types of errors (1.) client errors (2.) microservice errors (3.) backend errors. All are handled [here](./src/main/java/com/starling/challenge/inboundapicontrollers/ErrorAdviceController.java):
 
 ```java
