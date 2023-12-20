@@ -51,25 +51,30 @@ public class TransactionFeedClient {
         Date minTransactionTimestamp,
         Date maxTransactionTimestamp
         ) {
-        log.info("Getting trancations from account {} in range from {} to {}", accountUid, minTransactionTimestamp.getTime(), maxTransactionTimestamp.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String isoDate_minTransactionTimestamp = sdf.format(minTransactionTimestamp);
-        String isoDate_maxTransactionTimestamp = sdf.format(maxTransactionTimestamp);
-        return baseHttpClient
-        .getClient()
-        .get()
-        .uri(uriBuilder -> uriBuilder
-          .path(gettransactionsurl)
-          .queryParam("minTransactionTimestamp", isoDate_minTransactionTimestamp)
-          .queryParam("maxTransactionTimestamp", isoDate_maxTransactionTimestamp)
-          .build(accountUid))
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(FeedItems.class);
+        try {
+            log.info("Getting trancations from account {} in range from {} to {}", accountUid, minTransactionTimestamp.getTime(), maxTransactionTimestamp.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String isoDate_minTransactionTimestamp = sdf.format(minTransactionTimestamp);
+            String isoDate_maxTransactionTimestamp = sdf.format(maxTransactionTimestamp);
+            return baseHttpClient
+            .getClient()
+            .get()
+            .uri(uriBuilder -> uriBuilder
+            .path(gettransactionsurl)
+            .queryParam("minTransactionTimestamp", isoDate_minTransactionTimestamp)
+            .queryParam("maxTransactionTimestamp", isoDate_maxTransactionTimestamp)
+            .build(accountUid))
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(FeedItems.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to get transaction feed.");
+            throw ex;
+        }
     }
     
 }

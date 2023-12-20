@@ -16,6 +16,7 @@
    * [Manual Launch Steps](#manual-launch-steps)
    * [Unit Tests](#unit-tests)
    * [Consuming The New Round-Up API](#consuming-the-new-round-up-api)
+   * [Error Handling](#error-handling)
    * [Sample Logging output](#sample-logging-output)
    * [Application Properties](#application-properties)
    * [Security considerations](#security-considerations)
@@ -357,6 +358,52 @@ and a frontend when the server is running
 http://localhost:8080/swagger-ui/index.html
 
 ![frontend](./docs/images/frontend-swagger.png)
+
+<!-- TOC --><a name="error-handling"></a>
+## Error Handling
+
+Errors are parsed by the clients [here](./src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
+
+```java
+/**
+ * Get all accounts.
+ * @return Accounts object
+ */
+public Accounts getAccounts() {
+    try {
+        log.info("Getting all accounts.");
+        return baseHttpClient
+        .getClient()
+        .get()
+        .uri(listaccnumsurl)
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+            throw new StarlingRuntimeException(response);
+        })
+        .body(Accounts.class);
+    } catch (StarlingRuntimeException ex) {
+        log.error("Failed to get accounts.");
+        throw ex;
+    }
+}
+```
+
+Then the challenge application creates a client error response [here](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java).
+
+```java
+} catch (StarlingRuntimeException ex) {
+    ErrorResponse errorMsg = null;
+    try {
+        errorMsg = objectMapper.readValue(ex.getResponse().getBody(), ErrorResponse.class);
+        responseEntity = new ResponseEntity<>(errorMsg, ex.getResponse().getStatusCode());
+    } catch (Exception e) {
+        log.error("Error parsing client response: " + e.getMessage());
+    }
+    log.error("Client response error message: " + errorMsg.toString());
+}
+return responseEntity;
+```
 
 <!-- TOC --><a name="sample-logging-output"></a>
 ## Sample Logging output

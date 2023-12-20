@@ -1,12 +1,12 @@
 package com.starling.challenge.inboundapicontrollers.v1;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
-import com.starling.challenge.domain.model.challenge.RoundupResponse;
 import com.starling.challenge.domain.services.challenge.RoundupServiceInt;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,7 @@ public class RetroactiveRoundupController {
     /**
      * Allows user to select a week in the past and retroactively round up their transactions into a savings goal.
      * @param roundupRequest the request as a RoundupRequest object
-     * @return the amount rounded up as SavingsGoalTransferResponseV2 object
+     * @return the amount rounded up as ResponseEntity object
      */
     @Operation(summary = "Round up for week", description = "This operation rounds up for the week.")
     @ApiResponses(value = { 
@@ -38,7 +38,7 @@ public class RetroactiveRoundupController {
     @ApiResponse(responseCode = "500", description = "Internal server error") 
     })
     @RequestMapping(value = "/v1/retroactive-roundup", method = RequestMethod.POST)
-    public RoundupResponse roundUpForWeek(
+    public ResponseEntity<?> roundUpForWeek(
         @RequestBody
         RoundupRequest roundupRequest
     ){

@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    private List<ErrorResponse> errors;
+    private List<ErrorDetail> errors;
     private Boolean success;
 }

@@ -55,17 +55,22 @@ public class SavingsGoalsClient {
      * @return SavingsGoalsV2 object
      */
     public SavingsGoalsV2 getSavingsGoals(UUID accountUid) {
-        log.info("Getting savings goals");
-        return baseHttpClient
-        .getClient()
-        .get()
-        .uri(savingsgeturl, accountUid)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(SavingsGoalsV2.class);
+        try {
+            log.info("Getting savings goals");
+            return baseHttpClient
+            .getClient()
+            .get()
+            .uri(savingsgeturl, accountUid)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(SavingsGoalsV2.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to get savings goals.");
+            throw ex;
+        }
     }
 
     /**
@@ -78,18 +83,23 @@ public class SavingsGoalsClient {
         UUID accountUid,
         SavingsGoalRequestV2 savingsGoalRequestV2
         ) {
-        log.info("Creating savings goal: {}", savingsGoalRequestV2.getName());
-        return baseHttpClient
-        .getClient()
-        .put()
-        .uri(savingscreateurl, accountUid)
-        .body(savingsGoalRequestV2)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(CreateOrUpdateSavingsGoalResponseV2.class);
+        try {
+            log.info("Creating savings goal: {}", savingsGoalRequestV2.getName());
+            return baseHttpClient
+            .getClient()
+            .put()
+            .uri(savingscreateurl, accountUid)
+            .body(savingsGoalRequestV2)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(CreateOrUpdateSavingsGoalResponseV2.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to create savings goal.");
+            throw ex;
+        }
     }
 
     /**
@@ -106,17 +116,22 @@ public class SavingsGoalsClient {
         UUID transferUid,
         TopUpRequestV2 topUpRequestV2
         ) {
-        log.info("Transfering {} from account {} to savings goal {}.", topUpRequestV2.getAmount(), accountUid, savingsGoalUid);
-        return baseHttpClient
-        .getClient()
-        .put()
-        .uri(savingstransferurl, accountUid, savingsGoalUid, transferUid)
-        .body(topUpRequestV2)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(SavingsGoalTransferResponseV2.class);
+        try {
+            log.info("Transfering {} from account {} to savings goal {}.", topUpRequestV2.getAmount(), accountUid, savingsGoalUid);
+            return baseHttpClient
+            .getClient()
+            .put()
+            .uri(savingstransferurl, accountUid, savingsGoalUid, transferUid)
+            .body(topUpRequestV2)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(SavingsGoalTransferResponseV2.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to transfer to savings goal.");
+            throw ex;
+        }
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starling.challenge.domain.model.starling.Accounts;
 import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.exceptions.StarlingRuntimeException;
@@ -23,6 +24,7 @@ public class AccountsClient {
     private BaseHttpClient baseHttpClient;
     private String listaccnumsurl;
     private String confirmationoffundsurl;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Constructor for Starling accounts HTTP client.
@@ -47,17 +49,22 @@ public class AccountsClient {
      * @return Accounts object
      */
     public Accounts getAccounts() {
-        log.info("Getting all accounts.");
-        return baseHttpClient
-        .getClient()
-        .get()
-        .uri(listaccnumsurl)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(Accounts.class);
+        try {
+            log.info("Getting all accounts.");
+            return baseHttpClient
+            .getClient()
+            .get()
+            .uri(listaccnumsurl)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(Accounts.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to get accounts.");
+            throw ex;
+        }
     }
 
     /**
@@ -66,17 +73,22 @@ public class AccountsClient {
      * @return ConfirmationOfFundsResponse object
      */
     public ConfirmationOfFundsResponse getConfirmationOfFunds(UUID accountUid) {
-        log.info("Confirming funds are present in account {}", accountUid);
-        return baseHttpClient
-        .getClient()
-        .get()
-        .uri(confirmationoffundsurl, accountUid)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
-            throw new StarlingRuntimeException(response.getStatusCode(), response.getHeaders(), response.getBody());
-        })
-        .body(ConfirmationOfFundsResponse.class);
+        try {
+            log.info("Confirming funds are present in account {}", accountUid);
+            return baseHttpClient
+            .getClient()
+            .get()
+            .uri(confirmationoffundsurl, accountUid)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 
+                throw new StarlingRuntimeException(response);
+            })
+            .body(ConfirmationOfFundsResponse.class);
+        } catch (StarlingRuntimeException ex) {
+            log.error("Failed to confirm funds present.");
+            throw ex;
+        }
     }
     
 }
