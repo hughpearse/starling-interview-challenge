@@ -347,11 +347,33 @@ Send a post body similar to:
 ```
 as:
 
+Test 1 - Happy path:
+
 ```bash
 foo@bar:~$ curl -X POST -H "Content-Type: application/json" -d '{
   "weekStarting": "2023-12-11T12:34:56.000Z",
   "goalName": "Holidays",
   "accountname": "Personal"
+}' http://localhost:8080/v1/retroactive-roundup
+```
+
+Test 2 - Client data validation error (bad date):
+
+```bash
+foo@bar:~$ curl -X POST -H "Content-Type: application/json" -d '{
+  "weekStarting": "AAA",
+  "goalName": "Holidays",
+  "accountname": "Personal"
+}' http://localhost:8080/v1/retroactive-roundup
+```
+
+Test 3 - Null pointer error (bad account name)
+
+```bash
+foo@bar:~$ curl -X POST -H "Content-Type: application/json" -d '{
+  "weekStarting": "2023-12-11T12:34:56.000Z",
+  "goalName": "Holidays",
+  "accountname": "AAA"
 }' http://localhost:8080/v1/retroactive-roundup
 ```
 
@@ -411,7 +433,7 @@ Then the challenge application creates a client error response [here](./src/main
 return responseEntity;
 ```
 
-Request parsing errors do not reach the controller, and an informative message is generated [here](./src/main/java/com/starling/challenge/inboundapicontrollers/v1/RetroactiveRoundupController.java):
+There are 3 types of errors (1.) client errors (2.) microservice errors (3.) backend errors. All are handled [here](./src/main/java/com/starling/challenge/inboundapicontrollers/ErrorAdviceController.java):
 
 ```java
 @ExceptionHandler(HttpMessageNotReadableException.class)
