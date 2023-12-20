@@ -70,7 +70,7 @@ Neither does the savings goal API.
 
 ![savings-goal-api](./docs/images/savings-goal-api.png)
 
-This differs from a recurring transfer which takes a *rule* to transfer a fixed value.
+This differs from a recurring transfer which takes a *rule* to transfer a fixed value set in a CurrencyAndAmount object using the *amount* property.
 
 ![recurring-transfer-api](./docs/images/recurring-transfer-api.png)
 
