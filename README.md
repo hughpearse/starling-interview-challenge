@@ -25,6 +25,7 @@ Starling bank in the UK have a coding interview for potential candidates. This r
    * [Application Properties](#application-properties)
    * [Security considerations](#security-considerations)
    * [Bugs](#bugs)
+- [Scoring Summary](#scoring-summary)
 - [External References](#external-references)
 
 <!-- TOC end -->
@@ -133,25 +134,23 @@ Enumerate all transactions in a week. For each transaction calculate the round-u
 
 Below outlines some requirements to score points in the interview.
 
-1. Compiles - YES
-2. Launches/Runs - YES
-3. Works as expected - YES
-4. Automated tests - YES
-5. Arrange Act Assert (AAA) - YES
-6. Documentation - YES
-7. Javadoc (code, not HTML due to annotations) - YES
-8. Swagger (inbound API) - YES
-9. README instructions - YES
-10. Code quality - YES
-11. Domain Driven Design (DDD) - YES
-12. Application of SOLID principals - YES
-13. Error handling - YES
-14. Logging - YES
-15. Builds to jar - YES
-16. Postman collection - YES
-17. Docker runtime - YES
-
-Score = 17 / 17 -> 100%
+1. Compiles
+2. Launches/Runs
+3. Works as expected
+4. Automated tests
+5. Arrange Act Assert (AAA)
+6. Documentation
+7. Javadoc (code, not HTML due to annotations)
+8. Swagger (inbound API)
+9. README instructions
+10. Code quality
+11. Domain Driven Design (DDD)
+12. Application of SOLID principals
+13. Error handling
+14. Logging
+15. Builds to jar
+16. Postman collection
+17. Docker runtime
 
 <!-- TOC --><a name="implementation"></a>
 # Implementation
@@ -508,6 +507,31 @@ public BaseHttpClient(
 1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
 2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
 3. In swagger docs for SavingsGoalRequestV2, there is both a currency variable and target.currency variable.
+
+<!-- TOC --><a name="scoring-summary"></a>
+# Scoring Summary
+
+Below outlines some requirements to score points in the interview.
+
+1. Compiles - YES
+2. Launches/Runs - YES
+3. Works as expected - YES
+4. Automated tests - YES
+5. Arrange Act Assert (AAA) - YES
+6. Documentation - YES
+7. Javadoc (code, not HTML due to annotations) - YES
+8. Swagger (inbound API) - YES
+9. README instructions - YES
+10. Code quality - YES
+11. Domain Driven Design (DDD) - YES
+12. Application of SOLID principals - YES
+13. Error handling - YES
+14. Logging - YES
+15. Builds to jar - YES
+16. Postman collection - YES
+17. Docker runtime - YES
+
+Score = 17 / 17 -> 100%
 
 <!-- TOC --><a name="external-references"></a>
 # External References
