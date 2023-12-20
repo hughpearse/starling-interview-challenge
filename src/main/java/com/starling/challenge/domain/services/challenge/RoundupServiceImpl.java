@@ -92,25 +92,23 @@ public class RoundupServiceImpl implements RoundupServiceInt {
 
         // Transfer to savings goal
         RoundupResponse roundupResponse = new RoundupResponse();
+        CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum);
+        SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
         if(roundupSum.equals(BigInteger.ZERO) || !amountAvailable || overdraftCaused){
-            SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
             savingsGoalTransferResponseV2.setSuccess(false);
-            UUID emptyUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-            savingsGoalTransferResponseV2.setTransferUid(emptyUUID);
+            savingsGoalTransferResponseV2.setTransferUid(UUID.fromString("00000000-0000-0000-0000-000000000000"));
             log.info("Transfer cancelled.");
-            roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
-            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), BigInteger.ZERO));
+            currencyAndAmount.setMinorUnits(BigInteger.ZERO);
         } else {
-            CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum);
             TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
-            SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(
+            savingsGoalTransferResponseV2 = savingsGoalService.transferToSavingsGoal(
                 accountFound.getAccountUid(), 
                 savingsGoalUUID, 
                 topUpRequestV2
             );
-            roundupResponse.setTransferToSavingsGoal(transferToSavingsGoal);
-            roundupResponse.setCurrencyAndAmount(currencyAndAmount);
         }
+        roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
+        roundupResponse.setCurrencyAndAmount(currencyAndAmount);
         return new ResponseEntity<>(roundupResponse, HttpStatus.OK);
     }
 
