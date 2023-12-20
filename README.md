@@ -174,25 +174,6 @@ Transactions in scope will be limited as follows:
 <!-- TOC --><a name="show-me-the-solution"></a>
 ## Show me the solution
 
-Get the transactions for a given week [here](./src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
-
-```java
-public FeedItems getTransactionFeedForWeek(
-    UUID accountUid,
-    Date weekStarting
-    ) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(weekStarting);
-    calendar.add(Calendar.DATE, 7);
-    Date weekEnding = calendar.getTime();
-    FeedItems transactionFeed = getTransactionFeed(
-        accountUid, 
-        weekStarting, 
-        weekEnding);
-    return transactionFeed;
-}
-```
-
 Do the roundup [here](./src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java)
 
 ```java
