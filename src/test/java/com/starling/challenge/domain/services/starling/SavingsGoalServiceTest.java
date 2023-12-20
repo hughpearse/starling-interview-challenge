@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -31,11 +32,11 @@ public class SavingsGoalServiceTest {
         account.setAccountUid(UUID.randomUUID());
         account.setAccountType("Savings");
         account.setDefaultCategory("Personal");
-        account.setCurrency("GBP");
+        account.setCurrency(Currency.getInstance("GBP"));
         account.setCreatedAt("2023-12-19T12:30:28Z");
         account.setName("Test Account");
-        CurrencyAndAmount target = new CurrencyAndAmount("GBP", BigInteger.valueOf(1000));
-        CurrencyAndAmount totalSaved = new CurrencyAndAmount("GBP", BigInteger.valueOf(500));
+        CurrencyAndAmount target = new CurrencyAndAmount(Currency.getInstance("GBP"), BigInteger.valueOf(1000));
+        CurrencyAndAmount totalSaved = new CurrencyAndAmount(Currency.getInstance("GBP"), BigInteger.valueOf(500));
         SavingsGoalV2 testGoal = new SavingsGoalV2(
             account.getAccountUid(),
             goalName,

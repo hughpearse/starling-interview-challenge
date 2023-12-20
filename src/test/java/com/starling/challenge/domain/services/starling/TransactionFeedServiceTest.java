@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class TransactionFeedServiceTest {
         account.setAccountUid(UUID.randomUUID());
         account.setAccountType("Savings");
         account.setDefaultCategory("Personal");
-        account.setCurrency("GBP");
+        account.setCurrency(Currency.getInstance("GBP"));
         account.setCreatedAt("2023-12-19T12:30:28Z");
         account.setName("Test Account");
         Date weekStarting = new Date();
@@ -67,12 +68,12 @@ public class TransactionFeedServiceTest {
         testFeedItem.setUserNote("Test Note");
 
         CurrencyAndAmount amount = new CurrencyAndAmount();
-        amount.setCurrency("GBP");
+        amount.setCurrency(Currency.getInstance("GBP"));
         amount.setMinorUnits(BigInteger.valueOf(1000));
         testFeedItem.setAmount(amount);
 
         CurrencyAndAmount sourceAmount = new CurrencyAndAmount();
-        sourceAmount.setCurrency("GBP");
+        sourceAmount.setCurrency(Currency.getInstance("GBP"));
         sourceAmount.setMinorUnits(BigInteger.valueOf(1000));
         testFeedItem.setSourceAmount(sourceAmount);
 

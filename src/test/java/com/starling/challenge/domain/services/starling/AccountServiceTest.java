@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class AccountServiceTest {
             UUID.fromString("00000000-0000-0000-0000-000000000000"), 
             "Current account",
             "shopping category", 
-            "GBP", 
+            Currency.getInstance("GBP"), 
             "2023-01-01", 
             "testAccount");
         Accounts accounts = new Accounts(Arrays.asList(testAccount));

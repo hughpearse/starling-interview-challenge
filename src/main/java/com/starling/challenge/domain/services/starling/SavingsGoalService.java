@@ -12,6 +12,7 @@ import com.starling.challenge.outboundclients.starling.SavingsGoalsClient;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
+import java.util.Currency;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -91,7 +92,7 @@ public class SavingsGoalService implements SavingsGoalServiceInt {
         UUID accountUid,
         String goalName,
         BigInteger optionalSavingsGoalTarget,
-        String currency
+        Currency currency
     ){
         SavingsGoalV2 savingsGoal = getSavingsGoal(accountUid, goalName);
         CreateOrUpdateSavingsGoalResponseV2 newSavingsGoal = null;

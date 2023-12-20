@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Currency;
 import java.util.UUID;
 
 /**
@@ -16,7 +17,7 @@ public class AccountV2 {
     private UUID accountUid;
     private String accountType;
     private String defaultCategory;
-    private String currency;
+    private Currency currency;
     private String createdAt;
     private String name;   
 }

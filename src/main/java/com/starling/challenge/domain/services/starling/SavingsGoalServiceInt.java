@@ -1,6 +1,7 @@
 package com.starling.challenge.domain.services.starling;
 
 import java.math.BigInteger;
+import java.util.Currency;
 import java.util.UUID;
 
 import com.starling.challenge.domain.model.starling.CreateOrUpdateSavingsGoalResponseV2;
@@ -47,5 +48,5 @@ public interface SavingsGoalServiceInt {
      * @param currency the currency code
      * @return
      */
-    UUID getOrCreateSavingsGoal(UUID accountUid, String goalName, BigInteger optionalSavingsGoalTarget, String currency);
+    UUID getOrCreateSavingsGoal(UUID accountUid, String goalName, BigInteger optionalSavingsGoalTarget, Currency currency);
 }
