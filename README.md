@@ -157,11 +157,12 @@ Source code implementing above API calls can be found here:
 <!-- TOC --><a name="assumptions"></a>
 ## Assumptions
 
-Given the complex nature of these requirements and the limited time frame, the scope will be limited as follows:
+Transactions in scope will be limited as follows:
 1. A savings goal called "Holidays" will be created
 2. Transactions with specific criteria will be settled
-4. Transactions must be settled
-5. Transactions must be towards the "OUT" direction
+3. Transactions must be settled
+4. Transactions must be towards the "OUT" direction
+5. Transactions between two foreign currencies (which do not match account settings), will be ignored
 
 <!-- TOC --><a name="show-me-the-solution"></a>
 ## Show me the solution
@@ -200,7 +201,7 @@ private BigInteger sumFeedItems(FeedItems transactionFeed, AccountV2 account){
     for(FeedItem feedItem : feedItems){
         if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
             
-            // Find correct amount based on account settings
+            // Find correct amount based on currency in account settings
             CurrencyAndAmount amount = null;
             if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
             amount = feedItem.getAmount();
