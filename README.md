@@ -240,6 +240,7 @@ public SavingsGoalTransferResponseV2 transferToSavingsGoal(
 ## How it works - Architecture
 
 Steps:
+
 0. An external user sends a request
 1. Layer 1: The controller routes traffic to the roundup service which starts the whole process
 2. Layer 2: The client logic is in a saparate logical domain (eg: roundup service)
