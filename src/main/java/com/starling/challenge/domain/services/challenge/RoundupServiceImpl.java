@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
 import com.starling.challenge.domain.model.challenge.RoundupResponse;
 import com.starling.challenge.domain.model.starling.AccountV2;
+import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
 import com.starling.challenge.domain.model.starling.ErrorResponse;
 import com.starling.challenge.domain.model.starling.FeedItem;
@@ -87,9 +88,17 @@ public class RoundupServiceImpl implements RoundupServiceInt {
             // Sum the roundup of transations
             BigInteger roundupSum = sumFeedItems(transactionFeed, accountFound);
 
+            // Check account if funds are present
+            ConfirmationOfFundsResponse confirmationOfFunds = accountsService.getConfirmationOfFunds(
+                accountFound.getAccountUid(), 
+                roundupSum
+            );
+            boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
+            boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
+
             // Transfer to savings goal
             RoundupResponse roundupResponse = new RoundupResponse();
-            if(roundupSum.equals(BigInteger.ZERO)){
+            if(roundupSum.equals(BigInteger.ZERO) || !amountAvailable || overdraftCaused){
                 SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
                 savingsGoalTransferResponseV2.setSuccess(false);
                 UUID emptyUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");

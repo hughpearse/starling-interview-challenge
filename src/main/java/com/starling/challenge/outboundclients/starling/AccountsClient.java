@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,15 +71,22 @@ public class AccountsClient {
     /**
      * Check user has funds to transfer.
      * @param accountUid account UUID
+     * @param targetAmountInMinorUnits amount to transfer
      * @return ConfirmationOfFundsResponse object
      */
-    public ConfirmationOfFundsResponse getConfirmationOfFunds(UUID accountUid) {
+    public ConfirmationOfFundsResponse getConfirmationOfFunds(
+        UUID accountUid,
+        BigInteger targetAmountInMinorUnits
+        ) {
         try {
             log.info("Confirming funds are present in account {}", accountUid);
             return baseHttpClient
             .getClient()
             .get()
-            .uri(confirmationoffundsurl, accountUid)
+            .uri(uriBuilder -> uriBuilder
+                .path(confirmationoffundsurl)
+                .queryParam("targetAmountInMinorUnits", targetAmountInMinorUnits)
+                .build(accountUid))
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> { 

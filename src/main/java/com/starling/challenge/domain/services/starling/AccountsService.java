@@ -1,9 +1,13 @@
 package com.starling.challenge.domain.services.starling;
 
+import java.math.BigInteger;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.starling.challenge.domain.model.starling.AccountV2;
 import com.starling.challenge.domain.model.starling.Accounts;
+import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.outboundclients.starling.AccountsClient;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +21,6 @@ public class AccountsService implements AccountsServiceInt {
 
     private AccountsClient accountsClient;
 
-    /**
-     * Constructor for Account domain service.
-     * @param accountsClient injected HTTP client for interacting with accounts.
-     */
     public AccountsService(
         AccountsClient accountsClient
     ){
@@ -38,6 +38,13 @@ public class AccountsService implements AccountsServiceInt {
             }
         }
         return accountFound;
+    }
+
+    public ConfirmationOfFundsResponse getConfirmationOfFunds(
+        UUID accountUid, 
+        BigInteger targetAmountInMinorUnits
+        ) {
+        return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits);
     }
     
 }
