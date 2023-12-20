@@ -13,11 +13,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedItem {
+    public enum Direction {
+        IN, OUT
+    }
+
     private UUID feedItemUid;
     private UUID categoryUid;
     private CurrencyAndAmount amount;
     private CurrencyAndAmount sourceAmount;
-    private String direction;
+    private Direction direction;
     private String updatedAt;
     private String transactionTime;
     private String settlementTime;

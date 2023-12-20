@@ -205,7 +205,7 @@ private BigInteger sumFeedItems(FeedItems transactionFeed, AccountV2 account){
     List<FeedItem> feedItems = transactionFeed.getFeedItems();
     BigInteger roundupSum = BigInteger.ZERO;
     for(FeedItem feedItem : feedItems){
-        if(feedItem.getDirection().equals("OUT") ){
+        if(feedItem.getDirection().equals(Direction.OUT) ){
             // Find correct amount based on currency in account settings
             CurrencyAndAmount amount = null;
             if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));

@@ -17,6 +17,7 @@ import com.starling.challenge.domain.model.starling.FeedItem;
 import com.starling.challenge.domain.model.starling.FeedItems;
 import com.starling.challenge.domain.model.starling.SavingsGoalTransferResponseV2;
 import com.starling.challenge.domain.model.starling.TopUpRequestV2;
+import com.starling.challenge.domain.model.starling.FeedItem.Direction;
 import com.starling.challenge.domain.services.starling.AccountsService;
 import com.starling.challenge.domain.services.starling.SavingsGoalService;
 import com.starling.challenge.domain.services.starling.TransactionFeedService;
@@ -119,7 +120,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         List<FeedItem> feedItems = transactionFeed.getFeedItems();
         BigInteger roundupSum = BigInteger.ZERO;
         for(FeedItem feedItem : feedItems){
-            if(feedItem.getDirection().equals("OUT") ){
+            if(feedItem.getDirection().equals(Direction.OUT) ){
                 // Find correct amount based on currency in account settings
                 CurrencyAndAmount amount = null;
                 if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
