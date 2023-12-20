@@ -420,6 +420,19 @@ HttpMessageNotReadableException ex) {
 } 
 ```
 
+Example:
+
+```json
+{
+  "errors": [
+    {
+      "message": "JSON parse error: Cannot deserialize value of type `java.util.Date` from String \"2023-12-11T12:34:56.000ZARR\": not a valid representation (error: Failed to parse Date value '2023-12-11T12:34:56.000ZARR': Cannot parse date \"2023-12-11T12:34:56.000ZARR\": while it seems to fit format 'yyyy-MM-dd'T'HH:mm:ss.SSSX', parsing fails (leniency? null))"
+    }
+  ],
+  "success": false
+}
+```
+
 <!-- TOC --><a name="sample-logging-output"></a>
 ## Sample Logging output
 
