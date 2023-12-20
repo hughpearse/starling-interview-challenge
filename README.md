@@ -147,12 +147,14 @@ Below outlines some requirements to score points in the interview.
 16. Postman collection - YES
 17. Docker runtime - YES
 
+Score = 17 / 17 -> 100%
+
 <!-- TOC --><a name="implementation"></a>
 # Implementation
 
 The solution is relatively easy to implement.
 
-Source code implementing above API calls can be found here:
+Source code implementing above 3 recommended API calls can be found here:
 
 1. Accounts - [link](src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
 2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
