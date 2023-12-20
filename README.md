@@ -1,5 +1,9 @@
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
+# Introduction
+
+Starling bank in the UK have a coding interview for potential candidates. This requires completing the programming challenge below.
+
 - [Getting Started](#getting-started)
    * [Cloning the repo](#cloning-the-repo)
 - [Requirements](#requirements)
