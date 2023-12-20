@@ -362,7 +362,7 @@ http://localhost:8080/swagger-ui/index.html
 <!-- TOC --><a name="error-handling"></a>
 ## Error Handling
 
-Upstream rrrors are parsed by the clients [here](./src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
+Upstream errors are parsed by the clients [here](./src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
 
 ```java
 /**
