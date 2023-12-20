@@ -299,16 +299,10 @@ foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get
 <!-- TOC --><a name="manual-build-steps"></a>
 ## Manual Build Steps
 
-Run the following command to build the classes
+Run the following command to build the classes and release the jar
 
 ```bash
 foo@bar:starling-interview-challenge$ ./gradlew build -x test
-```
-
-Run the following command to release the jar
-
-```bash
-foo@bar:starling-interview-challenge$ ./gradlew jar
 ```
 
 <!-- TOC --><a name="manual-launch-steps"></a>
