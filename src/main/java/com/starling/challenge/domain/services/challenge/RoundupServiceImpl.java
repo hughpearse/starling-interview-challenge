@@ -7,13 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
 import com.starling.challenge.domain.model.challenge.RoundupResponse;
 import com.starling.challenge.domain.model.starling.AccountV2;
 import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
-import com.starling.challenge.domain.model.starling.ErrorResponse;
 import com.starling.challenge.domain.model.starling.FeedItem;
 import com.starling.challenge.domain.model.starling.FeedItems;
 import com.starling.challenge.domain.model.starling.SavingsGoalTransferResponseV2;
@@ -22,7 +20,6 @@ import com.starling.challenge.domain.model.starling.FeedItem.Direction;
 import com.starling.challenge.domain.services.starling.AccountsService;
 import com.starling.challenge.domain.services.starling.SavingsGoalService;
 import com.starling.challenge.domain.services.starling.TransactionFeedService;
-import com.starling.challenge.exceptions.StarlingRuntimeException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +33,6 @@ public class RoundupServiceImpl implements RoundupServiceInt {
     private AccountsService accountsService;
     private SavingsGoalService savingsGoalService;
     private TransactionFeedService transactionFeedService;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Constructor for roundup application.
@@ -61,75 +57,61 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         RoundupRequest roundupRequest
     ){
         log.info("Roundup request received.");
-        ResponseEntity<?> responseEntity = null;
-        try {
 
-            // Get account details
-            AccountV2 accountFound = accountsService.getAccount(roundupRequest.getAccountname());
+        // Get account details
+        AccountV2 accountFound = accountsService.getAccount(roundupRequest.getAccountname());
 
-            // Get savings goal or create new savings goal if it does not exist yet
-            UUID savingsGoalUUID = null;
-            if(null != accountFound){
-                savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(
-                    accountFound.getAccountUid(), 
-                    roundupRequest.getGoalName(), 
-                    roundupRequest.getOptionalSavingsGoalTarget(),
-                    accountFound.getCurrency()
-                );
-            }
-
-            // Get settled transactions
-            FeedItems transactionFeed = transactionFeedService.getTransactionFeedForWeek(
+        // Get savings goal or create new savings goal if it does not exist yet
+        UUID savingsGoalUUID = null;
+        if(null != accountFound){
+            savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(
                 accountFound.getAccountUid(), 
-                roundupRequest.getWeekStarting()
+                roundupRequest.getGoalName(), 
+                roundupRequest.getOptionalSavingsGoalTarget(),
+                accountFound.getCurrency()
             );
-            log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
-            
-            // Sum the roundup of transations
-            BigInteger roundupSum = sumFeedItems(transactionFeed, accountFound);
-
-            // Check account if funds are present
-            ConfirmationOfFundsResponse confirmationOfFunds = accountsService.getConfirmationOfFunds(
-                accountFound.getAccountUid(), 
-                roundupSum
-            );
-            boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
-            boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
-
-            // Transfer to savings goal
-            RoundupResponse roundupResponse = new RoundupResponse();
-            if(roundupSum.equals(BigInteger.ZERO) || !amountAvailable || overdraftCaused){
-                SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
-                savingsGoalTransferResponseV2.setSuccess(false);
-                UUID emptyUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-                savingsGoalTransferResponseV2.setTransferUid(emptyUUID);
-                log.info("Transfer cancelled.");
-                roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
-                roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), BigInteger.ZERO));
-            } else {
-                CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum);
-                TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
-                SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(
-                    accountFound.getAccountUid(), 
-                    savingsGoalUUID, 
-                    topUpRequestV2
-                );
-                roundupResponse.setTransferToSavingsGoal(transferToSavingsGoal);
-                roundupResponse.setCurrencyAndAmount(currencyAndAmount);
-            }
-
-            responseEntity = new ResponseEntity<>(roundupResponse, HttpStatus.OK);
-        } catch (StarlingRuntimeException ex) {
-            ErrorResponse errorMsg = null;
-            try {
-                errorMsg = objectMapper.readValue(ex.getResponse().getBody(), ErrorResponse.class);
-                responseEntity = new ResponseEntity<>(errorMsg, ex.getResponse().getStatusCode());
-            } catch (Exception e) {
-                log.error("Error parsing client response: " + e.getMessage());
-            }
-            log.error("Client response error message: " + errorMsg.toString());
         }
-        return responseEntity;
+
+        // Get settled transactions
+        FeedItems transactionFeed = transactionFeedService.getTransactionFeedForWeek(
+            accountFound.getAccountUid(), 
+            roundupRequest.getWeekStarting()
+        );
+        log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
+        
+        // Sum the roundup of transations
+        BigInteger roundupSum = sumFeedItems(transactionFeed, accountFound);
+
+        // Check account if funds are present
+        ConfirmationOfFundsResponse confirmationOfFunds = accountsService.getConfirmationOfFunds(
+            accountFound.getAccountUid(), 
+            roundupSum
+        );
+        boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
+        boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
+
+        // Transfer to savings goal
+        RoundupResponse roundupResponse = new RoundupResponse();
+        if(roundupSum.equals(BigInteger.ZERO) || !amountAvailable || overdraftCaused){
+            SavingsGoalTransferResponseV2 savingsGoalTransferResponseV2 = new SavingsGoalTransferResponseV2();
+            savingsGoalTransferResponseV2.setSuccess(false);
+            UUID emptyUUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+            savingsGoalTransferResponseV2.setTransferUid(emptyUUID);
+            log.info("Transfer cancelled.");
+            roundupResponse.setTransferToSavingsGoal(savingsGoalTransferResponseV2);
+            roundupResponse.setCurrencyAndAmount(new CurrencyAndAmount(accountFound.getCurrency(), BigInteger.ZERO));
+        } else {
+            CurrencyAndAmount currencyAndAmount = new CurrencyAndAmount(accountFound.getCurrency(), roundupSum);
+            TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
+            SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalService.transferToSavingsGoal(
+                accountFound.getAccountUid(), 
+                savingsGoalUUID, 
+                topUpRequestV2
+            );
+            roundupResponse.setTransferToSavingsGoal(transferToSavingsGoal);
+            roundupResponse.setCurrencyAndAmount(currencyAndAmount);
+        }
+        return new ResponseEntity<>(roundupResponse, HttpStatus.OK);
     }
 
     /**
