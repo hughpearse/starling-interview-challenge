@@ -119,7 +119,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         List<FeedItem> feedItems = transactionFeed.getFeedItems();
         BigInteger roundupSum = BigInteger.ZERO;
         for(FeedItem feedItem : feedItems){
-            if(feedItem.getDirection().equals("OUT") && feedItem.getStatus().equals("SETTLED")){
+            if(feedItem.getDirection().equals("OUT") ){
                 // Find correct amount based on currency in account settings
                 CurrencyAndAmount amount = null;
                 if(feedItem.getAmount().getCurrency().equals(account.getCurrency()));
