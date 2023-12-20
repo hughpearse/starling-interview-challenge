@@ -62,11 +62,11 @@ which provide an sdk for interacting with our api.
 
 Notes: 
 
-Existing Round-up API does *NOT* allow user to specify input parameter for a given week. This challenge is a new type of round-up API.
+Existing Round-up API does *NOT* allow user to specify input parameter for a given week. 
 
 ![roundup-api](./docs/images/roundup-api.png)
 
-and neither does the savings goal API
+Neither does the savings goal API.
 
 ![savings-goal-api](./docs/images/savings-goal-api.png)
 
@@ -74,7 +74,7 @@ This differs from a recurring transfer which takes a *rule* to transfer a fixed 
 
 ![recurring-transfer-api](./docs/images/recurring-transfer-api.png)
 
-The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week.
+This challenge is a new type of round-up API. The new API must combine the logic of round-up and savings, so a variable amount is saved on each given week.
 
 <!-- TOC --><a name="show-me-the-data"></a>
 ## Show me the data
