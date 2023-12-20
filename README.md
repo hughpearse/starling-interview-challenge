@@ -154,7 +154,7 @@ Score = 17 / 17 -> 100%
 
 The solution is relatively easy to implement.
 
-Source code implementing above 3 recommended API calls can be found here:
+Source code implementing above 3 [recommended](#requirements) API calls can be found here:
 
 1. Accounts - [link](src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
 2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
@@ -260,6 +260,7 @@ There is some room for improvement around the Starling specific data relating to
 <!-- TOC --><a name="how-it-works-architecture"></a>
 ## How it works - Architecture
 
+Steps:
 0. An external user sends a request
 1. Layer 1: The controller routes traffic to the roundup service which starts the whole process
 2. Layer 2: The client logic is in a saparate logical domain (eg: roundup service)
