@@ -48,7 +48,7 @@ public class SavingsGoalServiceTest {
         SavingsGoalService savingsGoalService = new SavingsGoalService(savingsGoalsClient);
 
         // Act: perform the test
-        SavingsGoalV2 result = savingsGoalService.getSavingsGoal(account, goalName);
+        SavingsGoalV2 result = savingsGoalService.getSavingsGoal(account.getAccountUid(), goalName);
 
         // Assert: check results
         assertNotNull(result, "Savings goal should not be null");

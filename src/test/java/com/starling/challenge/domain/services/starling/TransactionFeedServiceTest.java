@@ -20,6 +20,7 @@ import com.starling.challenge.domain.model.starling.BatchPaymentDetails;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
 import com.starling.challenge.domain.model.starling.FeedItem;
 import com.starling.challenge.domain.model.starling.FeedItems;
+import com.starling.challenge.domain.model.starling.FeedItem.Direction;
 
 @ExtendWith(MockitoExtension.class)
 public class TransactionFeedServiceTest {
@@ -43,7 +44,7 @@ public class TransactionFeedServiceTest {
         FeedItem testFeedItem = new FeedItem();
         testFeedItem.setFeedItemUid(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         testFeedItem.setCategoryUid(UUID.fromString("00000000-0000-0000-0000-000000000002"));
-        testFeedItem.setDirection("IN");
+        testFeedItem.setDirection(Direction.OUT);
         testFeedItem.setUpdatedAt("2023-01-01T00:00:00Z");
         testFeedItem.setTransactionTime("2023-01-01T00:00:00Z");
         testFeedItem.setSettlementTime("2023-01-01T00:00:00Z");
@@ -84,10 +85,10 @@ public class TransactionFeedServiceTest {
         testFeedItem.setHasReceipt(false);
 
         FeedItems testFeedItems = new FeedItems(Arrays.asList(testFeedItem));
-        when(transactionService.getTransactionFeedForWeek(account, weekStarting)).thenReturn(testFeedItems);
+        when(transactionService.getTransactionFeedForWeek(account.getAccountUid(), weekStarting)).thenReturn(testFeedItems);
 
         // Act: perform the test
-        FeedItems result = transactionService.getTransactionFeedForWeek(account, weekStarting);
+        FeedItems result = transactionService.getTransactionFeedForWeek(account.getAccountUid(), weekStarting);
 
         // Assert: check results
         assertNotNull(result, "FeedItems should not be null");

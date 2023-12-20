@@ -2,13 +2,13 @@ package com.starling.challenge.domain.services.starling;
 
 import org.springframework.stereotype.Service;
 
-import com.starling.challenge.domain.model.starling.AccountV2;
 import com.starling.challenge.domain.model.starling.FeedItems;
 import com.starling.challenge.outboundclients.starling.TransactionFeedClient;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.UUID;
 import java.util.Calendar;
 
 /**
@@ -31,12 +31,12 @@ public class TransactionFeedService implements TransactionFeedServiceInt {
     }
 
     public FeedItems getTransactionFeed(
-        AccountV2 account,
+        UUID accountUid,
         Date weekStarting,
         Date weekEnding
     ){
         FeedItems transactionFeed = transactionFeedClient.getTransactionFeed(
-            account.getAccountUid(), 
+            accountUid, 
             weekStarting, 
             weekEnding);
         log.info("Got transaction feed.");
@@ -44,7 +44,7 @@ public class TransactionFeedService implements TransactionFeedServiceInt {
     }
 
     public FeedItems getTransactionFeedForWeek(
-        AccountV2 account,
+        UUID accountUid,
         Date weekStarting
         ) {
         Calendar calendar = Calendar.getInstance();
@@ -52,7 +52,7 @@ public class TransactionFeedService implements TransactionFeedServiceInt {
         calendar.add(Calendar.DATE, 7);
         Date weekEnding = calendar.getTime();
         FeedItems transactionFeed = getTransactionFeed(
-            account, 
+            accountUid, 
             weekStarting, 
             weekEnding);
         return transactionFeed;

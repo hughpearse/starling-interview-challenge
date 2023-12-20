@@ -97,25 +97,8 @@ A FeedItem looks as follows:
     "minorUnits": 123456
   },
   "direction": "OUT", //Enum: [ IN, OUT ]
-  "status": "SETTLED", //Enum: [ UPCOMING, PENDING, REVERSED, SETTLED, DECLINED, REFUNDED, RETRYING, ACCOUNT_CHECK ]
   "exchangeRate": 0,
   <a bunch of other stuff>
-}
-```
-
-This can be represented as a java pojo:
-
-```java
-public class FeedItem {
-    private CurrencyAndAmount amount;
-    private CurrencyAndAmount sourceAmount;
-    private String direction;
-    private String status;
-    private double exchangeRate;
-}
-public class CurrencyAndAmount {
-    private String currency;
-    private int minorUnits; // note this might overflow, use BigInt
 }
 ```
 
@@ -163,6 +146,21 @@ Source code implementing above 3 [recommended](#requirements) API calls can be f
 2. Transaction feed - [link](src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
 3. Savings Goals - [link](src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
 
+Transactions can be represented as a java pojo:
+
+```java
+public class FeedItem {
+    private CurrencyAndAmount amount;
+    private CurrencyAndAmount sourceAmount;
+    private String direction;
+    private double exchangeRate;
+}
+public class CurrencyAndAmount {
+    private Currency currency;
+    private BigInteger minorUnits; // to prevent overflow when summing transactions
+}
+```
+
 <!-- TOC --><a name="assumptions"></a>
 ## Assumptions
 
@@ -180,7 +178,7 @@ Get the transactions for a given week [here](./src/main/java/com/starling/challe
 
 ```java
 public FeedItems getTransactionFeedForWeek(
-    AccountV2 account,
+    UUID accountUid,
     Date weekStarting
     ) {
     Calendar calendar = Calendar.getInstance();
@@ -188,7 +186,7 @@ public FeedItems getTransactionFeedForWeek(
     calendar.add(Calendar.DATE, 7);
     Date weekEnding = calendar.getTime();
     FeedItems transactionFeed = getTransactionFeed(
-        account, 
+        accountUid, 
         weekStarting, 
         weekEnding);
     return transactionFeed;
@@ -243,12 +241,12 @@ Transfer to the savings goal [here](./src/main/java/com/starling/challenge/domai
 
 ```java
 public SavingsGoalTransferResponseV2 transferToSavingsGoal(
-    AccountV2 account,
+    UUID accountUid,
     UUID savingsGoalUUID, 
     TopUpRequestV2 topUpRequestV2
     ){
         SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalsClient.transferToSavingsGoal(
-        account.getAccountUid(), 
+        accountUid, 
         savingsGoalUUID, 
         UUID.randomUUID(), 
         topUpRequestV2);
@@ -256,8 +254,6 @@ public SavingsGoalTransferResponseV2 transferToSavingsGoal(
         return transferToSavingsGoal;
 }
 ```
-
-There is some room for improvement around the Starling specific data relating to exchange rates.
 
 <!-- TOC --><a name="how-it-works-architecture"></a>
 ## How it works - Architecture
@@ -503,6 +499,8 @@ public BaseHttpClient(
 
 <!-- TOC --><a name="bugs"></a>
 ## Bugs
+
+There is some room for improvement around creating the savings goals, with the currency type and account type.
 
 1. Transactions API does not support updating the transaction feed item to manually mark individual items as rounded up.
 2. In swagger docs for FeedItem, amount and sourceAmount are not explained in reference to the account settings
