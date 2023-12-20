@@ -318,7 +318,7 @@ foo@bar:starling-interview-challenge$ ./gradlew jar
 Run the following command to start the application locally 
 
 ```bash
-foo@bar:starling-interview-challenge$ ./gradlew bootRun
+foo@bar:starling-interview-challenge$ ./gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"
 ```
 
 <!-- TOC --><a name="unit-tests"></a>
