@@ -1,0 +1,27 @@
+
+outboundclients:
+  starling:
+    core:
+      baseurl: https://api-sandbox.starlingbank.com
+      accesstoken: eyJhbGciOiJQUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_21Ty5KjMAz8lS3OoynCy4Tb3vYH9gOEJSeuAZuyTWantvbf12ASQmpudLfUkizxN9PeZ12Gkwbi0b77gG7Q5tKj-XiXdszeMj_3MeJEipviXILIZQEVlSW0oihBNXUlWBV1jRSD-c-UdSeRl0Ur8rx6yzSGjcjzZiFQSjub8MsOxO63ps27zVUDkhVChUJAW2MDSJzXvSjrnqvoHewHm5RR1KJS51xB07Y1VKKpYakHPYkIJJfYLhlxrJ9Ssvd7neIkWiBFsY4qFZxP5xZOoqC-r8uyycUysLQTL4-SOoXr2ioYHLlzjPTjRQhf04ugiU3QSrM78oP24cBsgMjFJjsmHR4gKSGgvI78iJzD1Trt44ZAG9I3TTMOSetxQCO3TiQ6AmlNcHZIvguzadYo7UYM2hqwCtRsaKsnZx_seG-bR9Rb9oiGMHBHPHDgB1zDRg4YEXYywkW84zVzwi_mu5TAZpLAHgR6xMvmmbT9E4JD41EuPT9oGKyM0-_eiQC7PMMru2U5q_RwL5VqH6g1yrFkPYUD8Efp0-no7vEWV-HhYvc-Dtw26oFbfZ6ZNJyKz_6NxS5-47WLyVRemeaBCeLY-9V4DiEOOE8bnPB-JvF3j1cUj8k6eip_ZO91j-w3-WA_zYMPvDQA0t9eqYlUop53uq7idcnZv_9XwBVjoQQAAA.aVftvqAnoSB4Up85j5HhjBJM0ibtC-HiRghizbLGj3UpGfi5uACwiLkPyX2QIt-NKAD57rTkD7Vi4OngnDijazGHMDOJH7N0J_I7h4FTPW81AuNeamWL3Oiocqaqwx1eQOq-hmsCLtjrA9OD4cMGcKiTsDxOBnVmMJzdmIAAma4S_Bcn9ai-kFaQIwWC-WlebhcPrCF-7joVVeH6W5tvZyRLXkVSaGnnOybC_kzMh4WKxKRHcbcdSm7ZeZx2GB4ZlmsaEpM5Y_-zW6RdI9NnpiI4mLUUp933rTo_GUCtIiVF34UiR0LV9CXYL1Y-XpvJSnjAGkNqLDs3PWwX1iIZJEhuY4RPjlmE2U_V_GNOIv1tn6WxCiK69XdB3wNduoHZZ-O7sexoGeYCEOIsORHWfkjJD2opYWN8rj1Tii1__bpHxoSmGloyZDAcI7M5KCl-eCWzGvLG7v5KrZ23UoBZvvfhEhX1CJSfgemYQ5kakYEEuslBqzRuSy1YS3HXyd3LeUvBgmk_DyhfadKSo6OX0PoJoqtPKTty7B6Fy527YHu2_Dm1yGNJLD_HO4t35zaY9z6bdOp11rHmcpfZxYGZfJaYSTXlntZQR_Tjwl8FWrGUwc69cQav_pNx0gnlgI713zNrlYk8JQzf5SKK4vavEqJyRAUdzs771bJ2Y4vcHk4
+    accounts:
+      listaccnums:
+        verb: GET
+        resource: /api/v2/accounts
+      confirmationoffunds:
+        verb: GET
+        resource: /api/v2/accounts/{accountUid}/confirmation-of-funds
+    transactionfeed:
+      getsettledinrange:
+        verb: GET
+        resource: /api/v2/feed/account/{accountUid}/settled-transactions-between
+    savingsgoals:
+      get:
+        verb: GET
+        resource: /api/v2/account/{accountUid}/savings-goals
+      create:
+        verb: PUT
+        resource: /api/v2/account/{accountUid}/savings-goals
+      transfer:
+        verb: PUT
+        resource: /api/v2/account/{accountUid}/savings-goals/{savingsGoalUid}/add-money/{transferUid}
