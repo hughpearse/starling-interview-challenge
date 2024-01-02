@@ -142,9 +142,9 @@ The solution is relatively easy to implement.
 
 Source code implementing above 3 [recommended](#requirements) API calls can be found here:
 
-1. Accounts - [link](./web-mvc/src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
-2. Transaction feed - [link](./web-mvc/src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
-3. Savings Goals - [link](./web-mvc/src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
+1. Accounts - [link](./spring-mvc/src/main/java/com/starling/challenge/domain/services/starling/AccountsService.java)
+2. Transaction feed - [link](./spring-mvc/src/main/java/com/starling/challenge/domain/services/starling/TransactionFeedService.java)
+3. Savings Goals - [link](./spring-mvc/src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
 
 Transactions can be represented as a java pojo:
 
@@ -174,7 +174,7 @@ Transactions in scope will be limited as follows:
 <!-- TOC --><a name="show-me-the-solution"></a>
 ## Show me the solution
 
-Do the roundup [here](./web-mvc/src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java)
+Do the roundup [here](./spring-mvc/src/main/java/com/starling/challenge/domain/services/challenge/RoundupServiceImpl.java)
 
 ```java
 /**
@@ -218,7 +218,7 @@ private BigInteger roundup(BigInteger transaction) {
 }
 ```
 
-Transfer to the savings goal [here](./web-mvc/src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
+Transfer to the savings goal [here](./spring-mvc/src/main/java/com/starling/challenge/domain/services/starling/SavingsGoalService.java)
 
 ```java
 public SavingsGoalTransferResponseV2 transferToSavingsGoal(
@@ -275,7 +275,7 @@ foo@bar:starling-interview-challenge$ docker run -p 8080:8080 -v $(pwd)/build/li
 or build from source with Docker and launch with Docker (easiest)
 
 ```bash
-foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get update && apt-get install -y git && git clone https://github.com/hughpearse/starling-interview-challenge.git /tmp/starling-interview-challenge && cd /tmp/starling-interview-challenge/web-mvc/ && /tmp/starling-interview-challenge/web-mvc/gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"'
+foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get update && apt-get install -y git && git clone https://github.com/hughpearse/starling-interview-challenge.git /tmp/starling-interview-challenge && cd /tmp/starling-interview-challenge/spring-mvc/ && /tmp/starling-interview-challenge/spring-mvc/gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"'
 ```
 
 <!-- TOC --><a name="manual-build-steps"></a>
@@ -284,7 +284,7 @@ foo@bar$ docker run -it eclipse-temurin:17.0.9_9-jdk-jammy /bin/bash -c 'apt-get
 Run the following command to build the classes and release the jar
 
 ```bash
-foo@bar:starling-interview-challenge/web-mvc/$ ./gradlew build -x test
+foo@bar:starling-interview-challenge/spring-mvc/$ ./gradlew build -x test
 ```
 
 <!-- TOC --><a name="manual-launch-steps"></a>
@@ -293,7 +293,7 @@ foo@bar:starling-interview-challenge/web-mvc/$ ./gradlew build -x test
 Run the following command to start the application locally 
 
 ```bash
-foo@bar:starling-interview-challenge/web-mvc/$ ./gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"
+foo@bar:starling-interview-challenge/spring-mvc/$ ./gradlew bootRun -Prun.args="--outboundclients.starling.core.accesstoken=eyJhbGciOiJ"
 ```
 
 <!-- TOC --><a name="unit-tests"></a>
@@ -302,13 +302,13 @@ foo@bar:starling-interview-challenge/web-mvc/$ ./gradlew bootRun -Prun.args="--o
 Run the following command to run junit tests
 
 ```bash
-foo@bar:starling-interview-challenge/web-mvc/$ ./gradlew test
+foo@bar:starling-interview-challenge/spring-mvc/$ ./gradlew test
 ```
 
 Code can be found here:
-1. [AccountServiceTest](./web-mvc/src/test/java/com/starling/challenge/domain/services/starling/AccountServiceTest.java)
-2. [SavingsGoalServiceTest](./web-mvc/src/test/java/com/starling/challenge/domain/services/starling/SavingsGoalServiceTest.java)
-3. [TransactionFeedServiceTest](./web-mvc/src/test/java/com/starling/challenge/domain/services/starling/TransactionFeedServiceTest.java)
+1. [AccountServiceTest](./spring-mvc/src/test/java/com/starling/challenge/domain/services/starling/AccountServiceTest.java)
+2. [SavingsGoalServiceTest](./spring-mvc/src/test/java/com/starling/challenge/domain/services/starling/SavingsGoalServiceTest.java)
+3. [TransactionFeedServiceTest](./spring-mvc/src/test/java/com/starling/challenge/domain/services/starling/TransactionFeedServiceTest.java)
 
 <!-- TOC --><a name="consuming-the-new-round-up-api"></a>
 ## Consuming The New Round-Up API
@@ -366,7 +366,7 @@ http://localhost:8080/swagger-ui/index.html
 <!-- TOC --><a name="error-handling"></a>
 ## Error Handling
 
-Upstream errors are parsed by the clients [here](./web-mvc/src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
+Upstream errors are parsed by the clients [here](./spring-mvc/src/main/java/com/starling/challenge/outboundclients/starling/AccountsClient.java), and thrown to the challenge application.
 
 ```java
 /**
@@ -393,7 +393,7 @@ public Accounts getAccounts() {
 }
 ```
 
-There are 3 types of errors (1.) client errors (2.) microservice errors (3.) backend errors. All are handled [here](./web-mvc/src/main/java/com/starling/challenge/inboundapicontrollers/ErrorAdviceController.java):
+There are 3 types of errors (1.) client errors (2.) microservice errors (3.) backend errors. All are handled [here](./web-spring/src/main/java/com/starling/challenge/inboundapicontrollers/ErrorAdviceController.java):
 
 ```java
 @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -441,7 +441,7 @@ Example:
 <!-- TOC --><a name="application-properties"></a>
 ## Application Properties
 
-The application runtime properties are set [here](./web-mvc/src/main/resources/application.yaml)
+The application runtime properties are set [here](./web-spring/src/main/resources/application.yaml)
 
 ```yaml
 outboundclients:
@@ -455,7 +455,7 @@ You can easily set this property at runtime as a command line argument, as shown
 <!-- TOC --><a name="security-considerations"></a>
 ## Security considerations
 
-The access token is set in the application [here](./web-mvc/src/main/java/com/starling/challenge/outboundclients/starling/BaseHttpClient.java). An attempt has been made in the starling challenge codebase to keep the access token set as a character array which will place the values on the JVM stack, instead of in heap memory. If the application crashes, hopefully the value will not be serialized to disk.
+The access token is set in the application [here](./web-spring/src/main/java/com/starling/challenge/outboundclients/starling/BaseHttpClient.java). An attempt has been made in the starling challenge codebase to keep the access token set as a character array which will place the values on the JVM stack, instead of in heap memory. If the application crashes, hopefully the value will not be serialized to disk.
 
 ```java
 /**
