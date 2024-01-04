@@ -520,3 +520,6 @@ Score = 17 / 17 -> 100%
 2. Documentation [here](https://developer.starlingbank.com/docs)
 3. Starling Swagger json [here](./docs/starling-swagger.json)
 4. Prior art research [here](https://github.com/Noah-Vincenz/starling-api-round-up/tree/main)
+
+# Note
+I went to all this effort and they still said "no".
