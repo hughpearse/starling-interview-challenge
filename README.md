@@ -27,6 +27,7 @@ Starling bank in the UK have a coding interview for potential candidates. This r
    * [Bugs](#bugs)
 - [Scoring Summary](#scoring-summary)
 - [External References](#external-references)
+- [Note](#note)
 
 <!-- TOC end -->
 
@@ -521,5 +522,6 @@ Score = 17 / 17 -> 100%
 3. Starling Swagger json [here](./docs/starling-swagger.json)
 4. Prior art research [here](https://github.com/Noah-Vincenz/starling-api-round-up/tree/main)
 
+<!-- TOC --><a name="note"></a>
 # Note
 I went to all this effort and they still said "no".
