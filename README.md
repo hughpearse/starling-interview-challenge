@@ -524,4 +524,4 @@ Score = 17 / 17 -> 100%
 
 <!-- TOC --><a name="note"></a>
 # Note
-I went to all this effort and they still said "no".
+I went to all this effort and they still said "no". Advice for future candidates: be cautious of wasted time.
