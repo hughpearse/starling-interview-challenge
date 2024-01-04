@@ -27,6 +27,8 @@ Starling bank in the UK have a coding interview for potential candidates. This r
    * [Bugs](#bugs)
 - [Scoring Summary](#scoring-summary)
 - [External References](#external-references)
+- [Prior art research](#prior-art)
+- [Note](#note)
 
 <!-- TOC end -->
 
@@ -519,4 +521,19 @@ Score = 17 / 17 -> 100%
 1. PDF Challenge Details [here](./docs/Starling_Bank_Engineering__Technical_Challenge.pdf)
 2. Documentation [here](https://developer.starlingbank.com/docs)
 3. Starling Swagger json [here](./docs/starling-swagger.json)
-4. Prior art research [here](https://github.com/Noah-Vincenz/starling-api-round-up/tree/main)
+
+<!-- TOC --><a name="prior-art"></a>
+# Prior art research
+
+1. [Noah-Vincenz](https://github.com/Noah-Vincenz/starling-api-round-up/tree/main/src/main/java/com/starling/savingsgoalcreator)
+2. [hisamvlad](https://github.com/hisamvlad/StarlingRoundUP/tree/master/StarlingChallengeV02/src/main/java/com/example/demo)
+3. [samuelcatalano](https://github.com/samuelcatalano/starling-bank-challenge/tree/main/src/main/java/co/uk/starlingbank/challenge/test/starlingbankchallengetest)
+4. [razvanmuscalu](https://github.com/razvanmuscalu/starling-technical-challenge/tree/master/src/main/java/com/starling/exercise/roundup)
+5. [devniz](https://github.com/devniz/savings-goals-client/tree/master/src/main/java/com/starlingbank/savingClient)
+6. [agile-develope](https://github.com/agile-developer/savings-goals/tree/master/src/main/java/com/starling/assignment)
+7. [zoluu](https://github.com/zoluu/Round-Up-For-Savings/tree/master)
+8. [sk18g12](https://github.com/sk18g12/savings-goal-roundup/tree/master/src/main/java/com/stuartkellaway/starlingbankchallenge)
+
+<!-- TOC --><a name="note"></a>
+# Note
+I went to all this effort and they still said "no". Advice for future candidates: be cautious of wasted time.
