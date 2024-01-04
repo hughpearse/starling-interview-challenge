@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Currency;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,15 +29,15 @@ public class SavingsGoalServiceTest {
     private SavingsGoalsClient savingsGoalsClient = mock(SavingsGoalsClient.class);
 
     @Test
-    public void testGetSavingsGoal() {
+    public void testGetSavingsGoal() throws Exception {
         // Arrange: configure mock responses
         String goalName = "testGoal";
         AccountV2 account = new AccountV2();
         account.setAccountUid(UUID.randomUUID());
-        account.setAccountType("Savings");
-        account.setDefaultCategory("Personal");
+        account.setAccountType(AccountV2.AccountType.PRIMARY);
+        account.setDefaultCategory(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         account.setCurrency(Currency.getInstance("GBP"));
-        account.setCreatedAt("2023-12-19T12:30:28Z");
+        account.setCreatedAt(DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }));
         account.setName("Test Account");
         CurrencyAndAmount target = new CurrencyAndAmount(Currency.getInstance("GBP"), BigInteger.valueOf(1000));
         CurrencyAndAmount totalSaved = new CurrencyAndAmount(Currency.getInstance("GBP"), BigInteger.valueOf(500));

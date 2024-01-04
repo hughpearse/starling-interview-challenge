@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Currency;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -14,10 +15,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountV2 {
+    public enum AccountType {
+        PRIMARY, ADDITIONAL, LOAN, FIXED_TERM_DEPOSIT
+    }
     private UUID accountUid;
-    private String accountType;
-    private String defaultCategory;
+    private AccountType accountType;
+    private UUID defaultCategory;
     private Currency currency;
-    private String createdAt;
+    private Date createdAt;
     private String name;   
 }

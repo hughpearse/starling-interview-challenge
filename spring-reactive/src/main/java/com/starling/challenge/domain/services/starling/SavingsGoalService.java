@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigInteger;
 import java.util.Currency;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -36,13 +37,26 @@ public class SavingsGoalService implements SavingsGoalServiceInt {
     ){
         this.savingsGoalsClient = savingsGoalsClient;
     }
-    
+
     public Mono<SavingsGoalV2> getSavingsGoal(UUID accountUid, String goalName) {
-        return savingsGoalsClient.getSavingsGoals(accountUid)
-            .flatMapIterable(SavingsGoalsV2::getSavingsGoalList)
-            .filter(savingsGoal -> savingsGoal.getName().equals(goalName))
-            .next()
-            .doOnSuccess(savingsGoal -> log.info("Savings goal found."));
+        Mono<SavingsGoalsV2> savingsGoals = savingsGoalsClient.getSavingsGoals(accountUid);
+        Mono<List<SavingsGoalV2>> savingsGoalListMono = savingsGoals.map(savingsGoalsV2 -> {
+            List<SavingsGoalV2> savingsGoalList = savingsGoalsV2.getSavingsGoalList();
+            return savingsGoalList;
+        });
+        Mono<SavingsGoalV2> savingsGoalMono = savingsGoalListMono.flatMap(list -> {
+            SavingsGoalV2 savingsGoal = list.stream().filter(savingsGoalV2 -> savingsGoalV2.getName().equals(goalName)).findFirst().orElse(null);
+            return Mono.just(savingsGoal); 
+        });
+        savingsGoalMono = savingsGoalMono.map(account -> {
+            if (account != null) {
+                log.info("Savings goal found.");
+            } else {
+                log.info("No Savings goal found.");
+            }
+            return account;
+        });
+        return savingsGoalMono;
     }
 
     public Mono<CreateOrUpdateSavingsGoalResponseV2> createSavingsGoal(
