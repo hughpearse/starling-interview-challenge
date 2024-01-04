@@ -529,6 +529,10 @@ Score = 17 / 17 -> 100%
 2. [hisamvlad](https://github.com/hisamvlad/StarlingRoundUP/tree/master/StarlingChallengeV02/src/main/java/com/example/demo)
 3. [samuelcatalano](https://github.com/samuelcatalano/starling-bank-challenge/tree/main/src/main/java/co/uk/starlingbank/challenge/test/starlingbankchallengetest)
 4. [razvanmuscalu](https://github.com/razvanmuscalu/starling-technical-challenge/tree/master/src/main/java/com/starling/exercise/roundup)
+5. [devniz](https://github.com/devniz/savings-goals-client/tree/master/src/main/java/com/starlingbank/savingClient)
+6. [agile-develope](https://github.com/agile-developer/savings-goals/tree/master/src/main/java/com/starling/assignment)
+7. [zoluu](https://github.com/zoluu/Round-Up-For-Savings/tree/master)
+8. [sk18g12](https://github.com/sk18g12/savings-goal-roundup/tree/master/src/main/java/com/stuartkellaway/starlingbankchallenge)
 
 <!-- TOC --><a name="note"></a>
 # Note
