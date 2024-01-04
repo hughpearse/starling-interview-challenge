@@ -12,6 +12,8 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,14 +30,14 @@ public class TransactionFeedServiceTest {
     private TransactionFeedService transactionService = mock(TransactionFeedService.class);
 
     @Test
-    public void testGetTransactionFeedForWeek() {
+    public void testGetTransactionFeedForWeek() throws Exception {
         // Arrange: configure mock responses
         AccountV2 account = new AccountV2();
         account.setAccountUid(UUID.randomUUID());
-        account.setAccountType("Savings");
-        account.setDefaultCategory("Personal");
+        account.setAccountType(AccountV2.AccountType.PRIMARY);
+        account.setDefaultCategory(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         account.setCurrency(Currency.getInstance("GBP"));
-        account.setCreatedAt("2023-12-19T12:30:28Z");
+        account.setCreatedAt(DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }));
         account.setName("Test Account");
         Date weekStarting = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -46,14 +48,14 @@ public class TransactionFeedServiceTest {
         testFeedItem.setFeedItemUid(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         testFeedItem.setCategoryUid(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         testFeedItem.setDirection(Direction.OUT);
-        testFeedItem.setUpdatedAt("2023-01-01T00:00:00Z");
-        testFeedItem.setTransactionTime("2023-01-01T00:00:00Z");
-        testFeedItem.setSettlementTime("2023-01-01T00:00:00Z");
-        testFeedItem.setSource("CARD_PAYMENT");
-        testFeedItem.setSourceSubType("CONTACTLESS");
-        testFeedItem.setStatus("SETTLED");
+        testFeedItem.setUpdatedAt(DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }));
+        testFeedItem.setTransactionTime(DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }));
+        testFeedItem.setSettlementTime(DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }));
+        testFeedItem.setSource(FeedItem.Source.CASH_DEPOSIT);
+        testFeedItem.setSourceSubType(FeedItem.SourceSubType.CONTACTLESS);
+        testFeedItem.setStatus(FeedItem.Status.SETTLED);
         testFeedItem.setTransactingApplicationUserUid(UUID.fromString("00000000-0000-0000-0000-000000000003"));
-        testFeedItem.setCounterPartyType("MERCHANT");
+        testFeedItem.setCounterPartyType(FeedItem.CounterPartyType.MERCHANT);
         testFeedItem.setCounterPartyUid(UUID.fromString("00000000-0000-0000-0000-000000000004"));
         testFeedItem.setCounterPartyName("Test Merchant");
         testFeedItem.setCounterPartySubEntityUid(UUID.fromString("00000000-0000-0000-0000-000000000005"));
@@ -63,8 +65,8 @@ public class TransactionFeedServiceTest {
         testFeedItem.setExchangeRate(1.0);
         testFeedItem.setTotalFees(0);
         testFeedItem.setReference("Test Reference");
-        testFeedItem.setCountry("GB");
-        testFeedItem.setSpendingCategory("GROCERIES");
+        testFeedItem.setCountry(FeedItem.Country.GB);
+        testFeedItem.setSpendingCategory(FeedItem.SpendingCategory.GROCERIES);
         testFeedItem.setUserNote("Test Note");
 
         CurrencyAndAmount amount = new CurrencyAndAmount();

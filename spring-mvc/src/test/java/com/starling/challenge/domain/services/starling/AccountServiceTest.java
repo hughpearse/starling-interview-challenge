@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Currency;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,15 +25,15 @@ public class AccountServiceTest {
     private AccountsClient accountsClient = mock(AccountsClient.class);
 
     @Test
-    public void testGetAccount() {
+    public void testGetAccount() throws Exception {
         // Arrange: configure mock responses
         String accountName = "testAccount";
         AccountV2 testAccount = new AccountV2(
             UUID.fromString("00000000-0000-0000-0000-000000000000"), 
-            "Current account",
-            "shopping category", 
+            AccountV2.AccountType.PRIMARY,
+            UUID.fromString("00000000-0000-0000-0000-000000000001"), 
             Currency.getInstance("GBP"), 
-            "2023-01-01", 
+            DateUtils.parseDate("2023-01-01T00:00:00.000Z", new String[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" }), 
             "testAccount");
         Accounts accounts = new Accounts(Arrays.asList(testAccount));
         when(accountsClient.getAccounts()).thenReturn(accounts);
