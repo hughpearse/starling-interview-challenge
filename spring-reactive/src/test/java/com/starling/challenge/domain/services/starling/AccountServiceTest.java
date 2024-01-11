@@ -39,7 +39,7 @@ public class AccountServiceTest {
             "testAccount");
         Accounts accounts = new Accounts(Arrays.asList(testAccount));
         when(accountsClient.getAccounts()).thenReturn(Mono.just(accounts));
-        AccountsService accountsService = new AccountsService(accountsClient);
+        AccountsServiceImpl accountsService = new AccountsServiceImpl(accountsClient);
 
         // Act: perform the test
         Mono<AccountV2> resultMono = accountsService.getAccount(accountName);
