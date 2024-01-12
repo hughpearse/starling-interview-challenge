@@ -19,6 +19,7 @@ import com.starling.challenge.domain.services.starling.AccountsService;
 import com.starling.challenge.domain.services.starling.SavingsGoalService;
 import com.starling.challenge.domain.services.starling.TransactionFeedService;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -29,27 +30,12 @@ import reactor.util.function.Tuples;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class RoundupServiceImpl implements RoundupService {
 
     private AccountsService accountsService;
     private SavingsGoalService savingsGoalService;
     private TransactionFeedService transactionFeedService;
-
-    /**
-     * Constructor for roundup application.
-     * @param accountsService injected service for interacting with accounts.
-     * @param savingsGoalsClient injected service for interacting with savings goals.
-     * @param transactionFeedClient injected service for interacting with transaction feed.
-     */
-    public RoundupServiceImpl(
-        AccountsService accountsService,
-        SavingsGoalService savingsGoalService,
-        TransactionFeedService transactionFeedService
-    ){
-        this.accountsService = accountsService;
-        this.savingsGoalService = savingsGoalService;
-        this.transactionFeedService = transactionFeedService;
-    }
 
     /**
      * Main logic of application to perform roundup on accounts.
@@ -60,31 +46,27 @@ public class RoundupServiceImpl implements RoundupService {
         log.info("Roundup request received.");
 
         // Get account details
-        Mono<AccountV2> accountFoundMono = accountsService.getAccount(roundupRequest.getAccountname());
+        Mono<AccountV2> accountFoundMono = accountsService.getAccount(roundupRequest.getAccountname()).single();
 
-        Mono<UUID> savingsGoalUUID = accountFoundMono.flatMap(accountFound -> {
-            if(accountFound != null) {
-                return savingsGoalService.getOrCreateSavingsGoal(
-                    accountFound.getAccountUid(), 
-                    roundupRequest.getGoalName(), 
-                    roundupRequest.getOptionalSavingsGoalTarget(),
-                    accountFound.getCurrency()
-                );
-            } else {
-                return Mono.empty();
-            }
+        // Get or create savings goal
+        Mono<UUID> savingsGoalUUIDMono = accountFoundMono.flatMap(accountFound -> {
+            log.info("Get or create savings goal");
+            return savingsGoalService.getOrCreateSavingsGoal(
+                accountFound.getAccountUid(), 
+                roundupRequest.getGoalName(), 
+                roundupRequest.getOptionalSavingsGoalTarget(),
+                accountFound.getCurrency()
+            );
         });
 
         // Get settled transactions
         Mono<FeedItems> transactionFeedMono = accountFoundMono.flatMap(account -> {
+            log.info("Get settled transactions");
             return transactionFeedService.getTransactionFeedForWeek(
                 account.getAccountUid(), 
                 roundupRequest.getWeekStarting()
             );
-        }).doOnNext(transactionFeed -> {
-                log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
-        });      
-        
+        });
         
         // Sum the roundup of transations
         Mono<BigInteger> roundupSumMono = Mono.zip(transactionFeedMono, accountFoundMono)
@@ -94,6 +76,7 @@ public class RoundupServiceImpl implements RoundupService {
         Mono<Tuple2<Boolean, Boolean>> confirmationOfFundsMono = Mono.zip(accountFoundMono, roundupSumMono)
         .flatMap(tuple -> accountsService.getConfirmationOfFunds(tuple.getT1().getAccountUid(), tuple.getT2())
             .map(confirmationOfFunds -> {
+                log.info("Check account if funds are present");
                 boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
                 boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
                 return Tuples.of(amountAvailable, overdraftCaused);
@@ -102,7 +85,7 @@ public class RoundupServiceImpl implements RoundupService {
         // Transfer to savings goal
         Mono<RoundupResponse> roundupResponseMono = Mono.zip(
             accountFoundMono, 
-            savingsGoalUUID, 
+            savingsGoalUUIDMono, 
             roundupSumMono, 
             confirmationOfFundsMono
         ).flatMap(tuple -> {

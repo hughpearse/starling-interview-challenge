@@ -11,6 +11,7 @@ import com.starling.challenge.domain.model.starling.Accounts;
 import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.outboundclients.starling.AccountsClient;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -19,39 +20,28 @@ import reactor.core.publisher.Mono;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AccountsServiceImpl implements AccountsService {
 
     private AccountsClient accountsClient;
 
-    public AccountsServiceImpl(
-        AccountsClient accountsClient
-    ){
-        this.accountsClient = accountsClient;
-    }
-
     public Mono<AccountV2> getAccount(String accountName) {
+        log.info("Getting account");
         Mono<Accounts> accountsMono = accountsClient.getAccounts();
         Mono<List<AccountV2>> listMono = accountsMono.map(accounts -> accounts.getAccounts());
-        Mono<AccountV2> accountV2Mono = listMono.flatMap(list -> {
-            AccountV2 accountV2 = list.stream().filter(account -> account.getName().equals(accountName)).findFirst().orElse(null);
-            return Mono.just(accountV2);
-        });
-        accountV2Mono = accountV2Mono.map(account -> {
-            if (account != null) {
-                log.info("Account found.");
-            } else {
-                log.info("No account found.");
-            }
-            return account;
-        });
-        return accountV2Mono;
+        return listMono.flatMapIterable(accounts -> accounts)
+        .filter(account -> accountName.equals(account.getName()))
+        .next();
     }
 
     public Mono<ConfirmationOfFundsResponse> getConfirmationOfFunds(
         UUID accountUid, 
         BigInteger targetAmountInMinorUnits
         ) {
-        return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits);
+        log.info("Getting confirmation of funds");
+        return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits)
+        .doOnSuccess(response -> log.info("Funds confirmed."))
+        .doOnError(t -> log.info("Funds not confirmed."));
     }
     
 }

@@ -13,20 +13,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import reactor.core.publisher.Mono;
 
 /**
  * Router for directing HTTP requests to the appropriate logic.
  */
 @RestController
+@AllArgsConstructor
 public class RetroactiveRoundupController {
+    
     private final RoundupService roundupService;
-
-    public RetroactiveRoundupController(
-        RoundupService roundupService
-    ){
-        this.roundupService = roundupService;
-    }
 
     /**
      * Allows user to select a week in the past and retroactively round up their transactions into a savings goal.
