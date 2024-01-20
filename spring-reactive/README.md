@@ -1,4 +1,4 @@
-# Lauch instructions
+# Launch instructions
 
 Steps:
 
