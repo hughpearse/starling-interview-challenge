@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
 import com.starling.challenge.domain.model.challenge.RoundupResponse;
 import com.starling.challenge.domain.model.starling.AccountV2;
+import com.starling.challenge.domain.model.starling.ConfirmationOfFundsResponse;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
 import com.starling.challenge.domain.model.starling.FeedItem;
 import com.starling.challenge.domain.model.starling.FeedItems;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple4;
 import reactor.util.function.Tuples;
 
 /**
@@ -46,7 +48,7 @@ public class RoundupServiceImpl implements RoundupService {
         log.info("Roundup request received.");
 
         // Get account details
-        Mono<AccountV2> accountFoundMono = accountsService.getAccount(roundupRequest.getAccountname()).single();
+        Mono<AccountV2> accountFoundMono = accountsService.getAccount(roundupRequest.getAccountname()).cache();
 
         // Get or create savings goal
         Mono<UUID> savingsGoalUUIDMono = accountFoundMono.flatMap(accountFound -> {
@@ -69,26 +71,32 @@ public class RoundupServiceImpl implements RoundupService {
         });
         
         // Sum the roundup of transations
-        Mono<BigInteger> roundupSumMono = Mono.zip(transactionFeedMono, accountFoundMono)
-        .map(tuple -> sumFeedItems(tuple.getT1(), tuple.getT2()));
+        Mono<Tuple2<FeedItems, AccountV2>> waitSumRoundup = Mono.zip(transactionFeedMono, accountFoundMono);
+        Mono<BigInteger> roundupSumMono = waitSumRoundup.map(tuple -> {
+            log.info("Sum roundup of transactions");
+            return sumFeedItems(tuple.getT1(), tuple.getT2());
+        }).cache();
 
         // Check account if funds are present
-        Mono<Tuple2<Boolean, Boolean>> confirmationOfFundsMono = Mono.zip(accountFoundMono, roundupSumMono)
-        .flatMap(tuple -> accountsService.getConfirmationOfFunds(tuple.getT1().getAccountUid(), tuple.getT2())
-            .map(confirmationOfFunds -> {
-                log.info("Check account if funds are present");
-                boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
-                boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
-                return Tuples.of(amountAvailable, overdraftCaused);
-            }));
+        Mono<Tuple2<AccountV2, BigInteger>> waitFundsPresent = Mono.zip(accountFoundMono, roundupSumMono);
+        Mono<ConfirmationOfFundsResponse> confirmationOfFundsMono = waitFundsPresent
+        .flatMap(response -> accountsService.getConfirmationOfFunds(response.getT1().getAccountUid(), response.getT2()));
+        Mono<Tuple2<Boolean, Boolean>> confirmationOfFundsTupleMono = confirmationOfFundsMono.map(confirmationOfFunds -> {
+            log.info("Check account if funds are present");
+            boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
+            boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
+            return Tuples.of(amountAvailable, overdraftCaused);
+        });
 
         // Transfer to savings goal
-        Mono<RoundupResponse> roundupResponseMono = Mono.zip(
+        Mono<Tuple4<AccountV2, UUID, BigInteger, Tuple2<Boolean, Boolean>>> waitTransferTuple = Mono.zip(
             accountFoundMono, 
             savingsGoalUUIDMono, 
             roundupSumMono, 
-            confirmationOfFundsMono
-        ).flatMap(tuple -> {
+            confirmationOfFundsTupleMono
+        );
+        Mono<RoundupResponse> roundupResponseMono = waitTransferTuple.flatMap(tuple -> {
+            log.info("Transfer to savings goal");
             return roundupTransfer(
                 tuple.getT1(), 
                 tuple.getT2(), 
