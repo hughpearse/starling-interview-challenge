@@ -19,6 +19,7 @@ import com.starling.challenge.domain.services.starling.TransactionFeedService;
 
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.tuples.Tuple2;
+import io.smallrye.mutiny.tuples.Tuple4;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,59 +59,64 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         log.info("Roundup request received.");
 
         // Get account details
-        Uni<AccountV2> accountFoundUni = accountsService.getAccount(roundupRequest.getAccountname());
+        Uni<AccountV2> accountFoundUni = accountsService.getAccount(roundupRequest.getAccountname()).memoize().indefinitely();
 
-        // Get savings goal
-        Uni<UUID> savingsGoalUUID = accountFoundUni.flatMap(accountFound -> {
-            if(accountFound != null) {
-                return savingsGoalService.getOrCreateSavingsGoal(
-                    accountFound.getAccountUid(), 
-                    roundupRequest.getGoalName(), 
-                    roundupRequest.getOptionalSavingsGoalTarget(),
-                    accountFound.getCurrency()
-                );
-            } else {
-                return Uni.createFrom().nullItem();
-            }
+        // Get or create savings goal
+        Uni<UUID> savingsGoalUUIDUni = accountFoundUni.onItem().transformToUni(accountFound -> {
+            log.info("Get or create savings goal");
+            return savingsGoalService.getOrCreateSavingsGoal(
+                accountFound.getAccountUid(), 
+                roundupRequest.getGoalName(), 
+                roundupRequest.getOptionalSavingsGoalTarget(),
+                accountFound.getCurrency()
+            );
         });
 
         // Get settled transactions
-        Uni<FeedItems> transactionFeedUni = accountFoundUni.flatMap(accountFound -> {
+        Uni<FeedItems> transactionFeedUni = accountFoundUni.onItem().transformToUni(account -> {
+            log.info("Get settled transactions");
             return transactionFeedService.getTransactionFeedForWeek(
-                accountFound.getAccountUid(), 
+                account.getAccountUid(), 
                 roundupRequest.getWeekStarting()
             );
-        }).onItem().ifNotNull().invoke(transactionFeed -> {
-                log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
         });
 
         // Sum the roundup of transactions
-        Uni<BigInteger> roundupSumUni = Uni.combine().all()
+        Uni<Tuple2<FeedItems, AccountV2>> waitRoundupSum = Uni.combine().all()
             .unis(transactionFeedUni, accountFoundUni)
-            .asTuple()
-            .map(tuple -> sumFeedItems(tuple.getItem1(), tuple.getItem2()));
+            .asTuple();
+        Uni<BigInteger> roundupSumUni = waitRoundupSum
+            .map(tuple -> {
+                log.info("Sum roundup of transactions");
+                return sumFeedItems(tuple.getItem1(), tuple.getItem2());
+            })
+            .memoize().indefinitely();
 
         // Check account if funds are present
-        Uni<ConfirmationOfFundsResponse> confirmationOfFundsResponseUni = Uni.combine().all()
+        Uni<Tuple2<AccountV2, BigInteger>> waitConfirmationOfFundsResponse = Uni.combine().all()
             .unis(accountFoundUni, roundupSumUni)
-            .asTuple()
+            .asTuple();
+        Uni<ConfirmationOfFundsResponse> confirmationOfFundsResponseUni = waitConfirmationOfFundsResponse
             .flatMap(tuple -> 
                 accountsService.getConfirmationOfFunds(tuple.getItem1().getAccountUid(), tuple.getItem2())
         );
         Uni<Tuple2<Boolean, Boolean>> confirmationOfFundsResponseUniTuple = confirmationOfFundsResponseUni.map(confirmationOfFunds -> {
+            log.info("Check account if funds are present");
             Boolean amountAvailable = confirmationOfFunds.isRequestedAmountAvailableToSpend();
             Boolean overdraftCaused = confirmationOfFunds.isAccountWouldBeInOverdraftIfRequestedAmountSpent();
             return Tuple2.of(amountAvailable, overdraftCaused);
         });
 
         // Transfer to savings goal
-        Uni<RoundupResponse> roundupResponseUni = Uni.combine().all()
+        Uni<Tuple4<AccountV2, UUID, BigInteger, Tuple2<Boolean, Boolean>>> waitRoundupResponse = Uni.combine().all()
         .unis(
             accountFoundUni, 
-            savingsGoalUUID, 
+            savingsGoalUUIDUni, 
             roundupSumUni, 
             confirmationOfFundsResponseUniTuple
-        ).asTuple().flatMap(tuple -> {
+        ).asTuple();
+        Uni<RoundupResponse> roundupResponseUni = waitRoundupResponse.flatMap(tuple -> {
+            log.info("Transfer to savings goal");
             return roundupTransfer(
                 tuple.getItem1(), 
                 tuple.getItem2(), 
@@ -122,7 +128,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         return roundupResponseUni;
     }
 
-/**
+    /**
      * Transfer money to savings goal
      * @param accountFound the AccountV2 object
      * @param savingsGoalUUID the UUID object

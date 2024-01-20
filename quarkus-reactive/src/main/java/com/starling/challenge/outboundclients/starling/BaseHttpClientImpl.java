@@ -4,11 +4,11 @@ import java.net.URI;
 
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 
-public class BaseHttpClient <T> {
+public class BaseHttpClientImpl <T> {
     
     private final T service;
 
-    public BaseHttpClient(URI domain, Class<T> serviceClass) {
+    public BaseHttpClientImpl(URI domain, Class<T> serviceClass) {
         this.service = QuarkusRestClientBuilder.newBuilder()
                 .baseUri(domain)
                 .build(serviceClass);
