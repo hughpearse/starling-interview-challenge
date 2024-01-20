@@ -37,7 +37,7 @@ public class AccountServiceTest {
             "testAccount");
         Accounts accounts = new Accounts(Arrays.asList(testAccount));
         when(accountsClient.getAccounts()).thenReturn(accounts);
-        AccountsService accountsService = new AccountsService(accountsClient);
+        AccountsServiceImpl accountsService = new AccountsServiceImpl(accountsClient);
 
         // Act: perform the test
         AccountV2 result = accountsService.getAccount(accountName);

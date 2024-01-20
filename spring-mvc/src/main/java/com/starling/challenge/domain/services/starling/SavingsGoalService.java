@@ -1,115 +1,52 @@
 package com.starling.challenge.domain.services.starling;
 
-import com.starling.challenge.domain.model.starling.CreateOrUpdateSavingsGoalResponseV2;
-import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
-import com.starling.challenge.domain.model.starling.SavingsGoalRequestV2;
-import com.starling.challenge.domain.model.starling.SavingsGoalTransferResponseV2;
-import com.starling.challenge.domain.model.starling.SavingsGoalV2;
-import com.starling.challenge.domain.model.starling.SavingsGoalsV2;
-import com.starling.challenge.domain.model.starling.TopUpRequestV2;
-import com.starling.challenge.outboundclients.starling.SavingsGoalsClient;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigInteger;
 import java.util.Currency;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
+import com.starling.challenge.domain.model.starling.CreateOrUpdateSavingsGoalResponseV2;
+import com.starling.challenge.domain.model.starling.SavingsGoalRequestV2;
+import com.starling.challenge.domain.model.starling.SavingsGoalTransferResponseV2;
+import com.starling.challenge.domain.model.starling.SavingsGoalV2;
+import com.starling.challenge.domain.model.starling.TopUpRequestV2;
 
 /**
- * Savings Goal Domain Service
+ * Savings Goals Domain Service
  */
-@Service
-@Slf4j
-public class SavingsGoalService implements SavingsGoalServiceInt {
-
-    private SavingsGoalsClient savingsGoalsClient;
+public interface SavingsGoalService {
 
     /**
-     * Constructor for Savings Goal domain service.
-     * @param savingsGoalsClient injected HTTP client for interacting with Savings goals.
+     * Get savings goal
+     * @param accountUid the account UUID
+     * @param goalName the name of the goal; eg "Holidays"
+     * @return a SavingsGoalV2 object
      */
-    public SavingsGoalService(
-        SavingsGoalsClient savingsGoalsClient
-    ){
-        this.savingsGoalsClient = savingsGoalsClient;
-    }
+    public SavingsGoalV2 getSavingsGoal(UUID accountUid, String goalName);
 
-    public SavingsGoalV2 getSavingsGoal(
-        UUID accountUid,
-        String goalName
-        ) {
-        SavingsGoalV2 savingsGoalFound = null;
-        SavingsGoalsV2 savingsGoals = savingsGoalsClient.getSavingsGoals(accountUid);
-        for(SavingsGoalV2 savingsGoal : savingsGoals.getSavingsGoalList()){
-            if(savingsGoal.getName().equals(goalName)){
-                savingsGoalFound = savingsGoal;
-                log.info("Savings goal found.");
-                break;
-            }
-        }
-        return savingsGoalFound;
-    }
+    /**
+     * Create savings goal
+     * @param accountUid the account UUID
+     * @param savingsGoalRequestV2 the savingsGoalRequestV2 object
+     * @return the CreateOrUpdateSavingsGoalResponseV2 object
+     */
+    public CreateOrUpdateSavingsGoalResponseV2 createSavingsGoal(UUID accountUid, SavingsGoalRequestV2 savingsGoalRequestV2);
 
-    public CreateOrUpdateSavingsGoalResponseV2 createSavingsGoal(
-        UUID accountUid,
-        SavingsGoalRequestV2 savingsGoalRequestV2
-        ) {
-        CreateOrUpdateSavingsGoalResponseV2 newSavingsGoal = null;
-        CurrencyAndAmount request_CurrencyAndAmount = new CurrencyAndAmount(
-            savingsGoalRequestV2.getCurrency(),
-            savingsGoalRequestV2.getTarget().getMinorUnits()
-            );
-            SavingsGoalRequestV2 request = new SavingsGoalRequestV2(
-                savingsGoalRequestV2.getName(), 
-                savingsGoalRequestV2.getCurrency(),
-                request_CurrencyAndAmount, 
-                ""
-                );
-            newSavingsGoal = savingsGoalsClient.createSavingsGoal(
-                accountUid,
-                request);
-            log.info("Savings goal created.");
-            return newSavingsGoal;
-    }
-    
-    public SavingsGoalTransferResponseV2 transferToSavingsGoal(
-        UUID accountUid,
-        UUID savingsGoalUUID, 
-        TopUpRequestV2 topUpRequestV2
-        ){
-            SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalsClient.transferToSavingsGoal(
-            accountUid, 
-            savingsGoalUUID, 
-            UUID.randomUUID(), 
-            topUpRequestV2);
-            log.info("Transfer completed.");
-            return transferToSavingsGoal;
-    }
+    /**
+     * Transfer to a savings goal
+     * @param accountUid the account UUID
+     * @param savingsGoalUUID savings goal UUID
+     * @param topUpRequestV2 the TopUpRequestV2 object
+     * @return a SavingsGoalTransferResponseV2 object
+     */
+    public SavingsGoalTransferResponseV2 transferToSavingsGoal(UUID accountUid, UUID savingsGoalUUID, TopUpRequestV2 topUpRequestV2);
 
-    public UUID getOrCreateSavingsGoal(
-        UUID accountUid,
-        String goalName,
-        BigInteger optionalSavingsGoalTarget,
-        Currency currency
-    ){
-        SavingsGoalV2 savingsGoal = getSavingsGoal(accountUid, goalName);
-        CreateOrUpdateSavingsGoalResponseV2 newSavingsGoal = null;
-        if(null == savingsGoal){
-            CurrencyAndAmount request_CurrencyAndAmount = new CurrencyAndAmount(
-                currency, 
-                optionalSavingsGoalTarget
-            );
-            SavingsGoalRequestV2 savingsGoalRequestV2 = new SavingsGoalRequestV2(
-                goalName, 
-                currency, 
-                request_CurrencyAndAmount, 
-                ""
-            );
-            newSavingsGoal = createSavingsGoal(accountUid, savingsGoalRequestV2);
-        }
-        UUID savingsGoalUUID = null != savingsGoal ? savingsGoal.getSavingsGoalUid() : newSavingsGoal.getSavingsGoalUid();
-        return savingsGoalUUID;
-    }
+    /**
+     * 
+     * @param accountUid the account UUID
+     * @param goalName Savings goal name
+     * @param optionalSavingsGoalTarget the goal target
+     * @param currency the currency code
+     * @return
+     */
+    UUID getOrCreateSavingsGoal(UUID accountUid, String goalName, BigInteger optionalSavingsGoalTarget, Currency currency);
 }

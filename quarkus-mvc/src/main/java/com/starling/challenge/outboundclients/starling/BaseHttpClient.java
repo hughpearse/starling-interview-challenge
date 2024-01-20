@@ -4,7 +4,7 @@ import java.net.URI;
 
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 
-public class BaseHttpClient <T> {
+public class BaseHttpClient<T> implements BaseHttpClientInt<T> {
     
     private final T service;
 

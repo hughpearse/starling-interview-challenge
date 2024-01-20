@@ -27,7 +27,7 @@ import com.starling.challenge.domain.model.starling.FeedItem.Direction;
 
 @ExtendWith(MockitoExtension.class)
 public class TransactionFeedServiceTest {
-    private TransactionFeedService transactionService = mock(TransactionFeedService.class);
+    private TransactionFeedServiceImpl transactionService = mock(TransactionFeedServiceImpl.class);
 
     @Test
     public void testGetTransactionFeedForWeek() throws Exception {

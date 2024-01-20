@@ -48,7 +48,7 @@ public class SavingsGoalServiceTest {
             "ACTIVE");
         SavingsGoalsV2 savingsGoals = new SavingsGoalsV2(Arrays.asList(testGoal));
         when(savingsGoalsClient.getSavingsGoals(account.getAccountUid())).thenReturn(savingsGoals);
-        SavingsGoalService savingsGoalService = new SavingsGoalService(savingsGoalsClient);
+        SavingsGoalServiceImpl savingsGoalService = new SavingsGoalServiceImpl(savingsGoalsClient);
 
         // Act: perform the test
         SavingsGoalV2 result = savingsGoalService.getSavingsGoal(account.getAccountUid(), goalName);

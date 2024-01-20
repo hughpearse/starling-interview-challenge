@@ -18,6 +18,7 @@ import com.starling.challenge.domain.services.starling.SavingsGoalService;
 import com.starling.challenge.domain.services.starling.TransactionFeedService;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,27 +26,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @ApplicationScoped
 @Slf4j
+@AllArgsConstructor
 public class RoundupServiceImpl implements RoundupServiceInt {
 
     private AccountsService accountsService;
     private SavingsGoalService savingsGoalService;
     private TransactionFeedService transactionFeedService;
-
-    /**
-     * Constructor for roundup application.
-     * @param accountsService injected service for interacting with accounts.
-     * @param savingsGoalsClient injected service for interacting with savings goals.
-     * @param transactionFeedClient injected service for interacting with transaction feed.
-     */
-    public RoundupServiceImpl(
-        AccountsService accountsService,
-        SavingsGoalService savingsGoalService,
-        TransactionFeedService transactionFeedService
-    ){
-        this.accountsService = accountsService;
-        this.savingsGoalService = savingsGoalService;
-        this.transactionFeedService = transactionFeedService;
-    }
 
     /**
      * Main logic of application to perform roundup on accounts.
