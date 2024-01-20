@@ -1,5 +1,9 @@
 package com.starling.challenge.domain.services.starling;
 
+import java.math.BigInteger;
+import java.util.Currency;
+import java.util.UUID;
+
 import com.starling.challenge.config.MicroProfileConfig;
 import com.starling.challenge.domain.model.starling.CreateOrUpdateSavingsGoalResponseV2;
 import com.starling.challenge.domain.model.starling.CurrencyAndAmount;
@@ -13,10 +17,6 @@ import com.starling.challenge.outboundclients.starling.SavingsGoalsClient;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-
-import java.math.BigInteger;
-import java.util.Currency;
-import java.util.UUID;
 
 /**
  * Savings Goal Domain Service
@@ -34,7 +34,8 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
     public SavingsGoalV2 getSavingsGoal(
         UUID accountUid,
         String goalName
-        ) {
+    ) {
+        log.info("Getting savings goal");
         SavingsGoalV2 savingsGoalFound = null;
         SavingsGoalsV2 savingsGoals = savingsGoalsClient.getSavingsGoals(accountUid);
         for(SavingsGoalV2 savingsGoal : savingsGoals.getSavingsGoalList()){
@@ -50,7 +51,8 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
     public CreateOrUpdateSavingsGoalResponseV2 createSavingsGoal(
         UUID accountUid,
         SavingsGoalRequestV2 savingsGoalRequestV2
-        ) {
+    ) {
+        log.info("Creating new savings goal");
         CreateOrUpdateSavingsGoalResponseV2 newSavingsGoal = null;
         CurrencyAndAmount request_CurrencyAndAmount = new CurrencyAndAmount(
             savingsGoalRequestV2.getCurrency(),
@@ -73,14 +75,15 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         UUID accountUid,
         UUID savingsGoalUUID, 
         TopUpRequestV2 topUpRequestV2
-        ){
-            SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalsClient.transferToSavingsGoal(
-            accountUid, 
-            savingsGoalUUID, 
-            UUID.randomUUID(), 
-            topUpRequestV2);
-            log.info("Transfer completed.");
-            return transferToSavingsGoal;
+    ){
+        log.info("Transferring to savings goal");
+        SavingsGoalTransferResponseV2 transferToSavingsGoal = savingsGoalsClient.transferToSavingsGoal(
+        accountUid, 
+        savingsGoalUUID, 
+        UUID.randomUUID(), 
+        topUpRequestV2);
+        log.info("Transfer completed.");
+        return transferToSavingsGoal;
     }
 
     public UUID getOrCreateSavingsGoal(
@@ -89,6 +92,7 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         BigInteger optionalSavingsGoalTarget,
         Currency currency
     ){
+        log.info("Investigating savings goal status");
         SavingsGoalV2 savingsGoal = getSavingsGoal(accountUid, goalName);
         CreateOrUpdateSavingsGoalResponseV2 newSavingsGoal = null;
         if(null == savingsGoal){

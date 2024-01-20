@@ -27,6 +27,7 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
     public AccountV2 getAccount(String accountName) {
+        log.info("Getting account");
         Accounts accounts = accountsClient.getAccounts();
         AccountV2 accountFound = null;
         for(AccountV2 account : accounts.getAccounts()){
@@ -43,6 +44,7 @@ public class AccountsServiceImpl implements AccountsService {
         UUID accountUid, 
         BigInteger targetAmountInMinorUnits
         ) {
+        log.info("Getting confirmation of funds");    
         return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits);
     }
     

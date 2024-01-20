@@ -32,6 +32,7 @@ public class TransactionFeedServiceImpl implements TransactionFeedService {
         Date weekStarting,
         Date weekEnding
     ){
+        log.info("Getting transaction feed");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String isoDate_minTransactionTimestamp = sdf.format(weekStarting);
@@ -47,7 +48,8 @@ public class TransactionFeedServiceImpl implements TransactionFeedService {
     public FeedItems getTransactionFeedForWeek(
         UUID accountUid,
         Date weekStarting
-        ) {
+    ) {
+        log.info("Getting transaction feed for week");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(weekStarting);
         calendar.add(Calendar.DATE, 7);
@@ -58,5 +60,4 @@ public class TransactionFeedServiceImpl implements TransactionFeedService {
             weekEnding);
         return transactionFeed;
     }
-    
 }

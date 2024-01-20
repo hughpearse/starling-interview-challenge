@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
-import com.starling.challenge.domain.services.challenge.RoundupServiceInt;
+import com.starling.challenge.domain.services.challenge.RoundupService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 public class RetroactiveRoundupController {
-    private final RoundupServiceInt roundupService;
+    private final RoundupService roundupService;
 
     /**
      * Allows user to select a week in the past and retroactively round up their transactions into a savings goal.

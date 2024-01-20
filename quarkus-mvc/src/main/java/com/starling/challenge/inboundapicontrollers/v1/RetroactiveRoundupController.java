@@ -2,7 +2,7 @@ package com.starling.challenge.inboundapicontrollers.v1;
 
 import com.starling.challenge.domain.model.challenge.RoundupRequest;
 import com.starling.challenge.domain.model.challenge.RoundupResponse;
-import com.starling.challenge.domain.services.challenge.RoundupServiceInt;
+import com.starling.challenge.domain.services.challenge.RoundupService;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -12,10 +12,10 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/v1/retroactive-roundup")
 public class RetroactiveRoundupController {
 
-    private final RoundupServiceInt roundupService;
+    private final RoundupService roundupService;
 
     public RetroactiveRoundupController(
-        RoundupServiceInt roundupService
+        RoundupService roundupService
     ){
         this.roundupService = roundupService;
     }

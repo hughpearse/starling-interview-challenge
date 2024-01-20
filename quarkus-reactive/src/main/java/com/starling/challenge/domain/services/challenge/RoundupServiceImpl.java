@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @ApplicationScoped
 @Slf4j
-public class RoundupServiceImpl implements RoundupServiceInt {
+public class RoundupServiceImpl implements RoundupService {
 
     private AccountsService accountsService;
     private SavingsGoalService savingsGoalService;

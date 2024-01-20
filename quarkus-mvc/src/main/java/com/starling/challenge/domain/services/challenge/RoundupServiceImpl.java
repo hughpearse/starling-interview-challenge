@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @ApplicationScoped
 @Slf4j
 @AllArgsConstructor
-public class RoundupServiceImpl implements RoundupServiceInt {
+public class RoundupServiceImpl implements RoundupService {
 
     private AccountsService accountsService;
     private SavingsGoalService savingsGoalService;
@@ -47,6 +47,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         // Get savings goal or create new savings goal if it does not exist yet
         UUID savingsGoalUUID = null;
         if(null != accountFound){
+            log.info("Get or create savings goal");
             savingsGoalUUID = savingsGoalService.getOrCreateSavingsGoal(
                 accountFound.getAccountUid(), 
                 roundupRequest.getGoalName(), 
@@ -56,6 +57,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         }
 
         // Get settled transactions
+        log.info("Get settled transactions");
         FeedItems transactionFeed = transactionFeedService.getTransactionFeedForWeek(
             accountFound.getAccountUid(), 
             roundupRequest.getWeekStarting()
@@ -63,9 +65,11 @@ public class RoundupServiceImpl implements RoundupServiceInt {
         log.info("Found {} transactions.", transactionFeed.getFeedItems().size());
         
         // Sum the roundup of transations
+        log.info("Sum roundup of transactions");
         BigInteger roundupSum = sumFeedItems(transactionFeed, accountFound);
 
         // Check account if funds are present
+        log.info("Check account if funds are present");
         ConfirmationOfFundsResponse confirmationOfFunds = accountsService.getConfirmationOfFunds(
             accountFound.getAccountUid(), 
             roundupSum
@@ -84,6 +88,7 @@ public class RoundupServiceImpl implements RoundupServiceInt {
             currencyAndAmount.setMinorUnits(BigInteger.ZERO);
         } else {
             TopUpRequestV2 topUpRequestV2 = new TopUpRequestV2(currencyAndAmount);
+            log.info("Transfer to savings goal");
             savingsGoalTransferResponseV2 = savingsGoalService.transferToSavingsGoal(
                 accountFound.getAccountUid(), 
                 savingsGoalUUID, 
