@@ -100,6 +100,39 @@ public class TransactionFeedServiceTest {
             .assertNext(feedItems -> {
                 assertNotNull(feedItems, "FeedItems should not be null");
                 assertEquals(testFeedItems, feedItems, "FeedItems should match");
+                assertEquals(1, feedItems.getFeedItems().size(), "FeedItems size should be 1");
+                FeedItem resultFeedItem = feedItems.getFeedItems().get(0);
+                assertEquals(testFeedItem.getFeedItemUid(), resultFeedItem.getFeedItemUid(), "FeedItem Uid should match");
+                assertEquals(testFeedItem.getCategoryUid(), resultFeedItem.getCategoryUid(), "Category Uid should match");
+                assertEquals(testFeedItem.getDirection(), resultFeedItem.getDirection(), "Direction should match");
+                assertEquals(testFeedItem.getUpdatedAt(), resultFeedItem.getUpdatedAt(), "Updated at should match");
+                assertEquals(testFeedItem.getTransactionTime(), resultFeedItem.getTransactionTime(), "Transaction time should match");
+                assertEquals(testFeedItem.getSettlementTime(), resultFeedItem.getSettlementTime(), "Settlement time should match");
+                assertEquals(testFeedItem.getSource(), resultFeedItem.getSource(), "Source should match");
+                assertEquals(testFeedItem.getSourceSubType(), resultFeedItem.getSourceSubType(), "Source sub type should match");
+                assertEquals(testFeedItem.getStatus(), resultFeedItem.getStatus(), "Status should match");
+                assertEquals(testFeedItem.getTransactingApplicationUserUid(), resultFeedItem.getTransactingApplicationUserUid(), "Transacting application user uid should match");
+                assertEquals(testFeedItem.getCounterPartyType(), resultFeedItem.getCounterPartyType(), "Counter party type should match");
+                assertEquals(testFeedItem.getCounterPartyUid(), resultFeedItem.getCounterPartyUid(), "Counter party uid should match");
+                assertEquals(testFeedItem.getCounterPartyName(), resultFeedItem.getCounterPartyName(), "Counter party name should match");
+                assertEquals(testFeedItem.getCounterPartySubEntityUid(), resultFeedItem.getCounterPartySubEntityUid(), "Counter party sub entity uid should match");
+                assertEquals(testFeedItem.getCounterPartySubEntityName(), resultFeedItem.getCounterPartySubEntityName(), "Counter party sub entity name should match");
+                assertEquals(testFeedItem.getCounterPartySubEntityIdentifier(), resultFeedItem.getCounterPartySubEntityIdentifier(), "Counter party sub entity identifier should match");
+                assertEquals(testFeedItem.getCounterPartySubEntitySubIdentifier(), resultFeedItem.getCounterPartySubEntitySubIdentifier(), "Counter party sub entity sub identifier should match");
+                assertEquals(testFeedItem.getExchangeRate(), resultFeedItem.getExchangeRate(), "Exchange rate should match");
+                assertEquals(testFeedItem.getTotalFees(), resultFeedItem.getTotalFees(), "Total fees should match");
+                assertEquals(testFeedItem.getReference(), resultFeedItem.getReference(), "Reference should match");
+                assertEquals(testFeedItem.getCountry(), resultFeedItem.getCountry(), "Country should match");
+                assertEquals(testFeedItem.getSpendingCategory(), resultFeedItem.getSpendingCategory(), "Spending category should match");
+                assertEquals(testFeedItem.getUserNote(), resultFeedItem.getUserNote(), "User note should match");
+                assertEquals(testFeedItem.getAmount().getCurrency(), resultFeedItem.getAmount().getCurrency(), "Amount currency should match");
+                assertEquals(testFeedItem.getAmount().getMinorUnits(), resultFeedItem.getAmount().getMinorUnits(), "Amount minor units should match");
+                assertEquals(testFeedItem.getSourceAmount().getCurrency(), resultFeedItem.getSourceAmount().getCurrency(), "Source amount currency should match");
+                assertEquals(testFeedItem.getSourceAmount().getMinorUnits(), resultFeedItem.getSourceAmount().getMinorUnits(), "Source amount minor units should match");
+                assertEquals(testFeedItem.getBatchPaymentDetails().getBatchPaymentUid(), resultFeedItem.getBatchPaymentDetails().getBatchPaymentUid(), "Batch payment uid should match");
+                assertEquals(testFeedItem.getBatchPaymentDetails().getBatchPaymentType(), resultFeedItem.getBatchPaymentDetails().getBatchPaymentType(), "Batch payment type should match");
+                assertEquals(testFeedItem.isHasAttachment(), resultFeedItem.isHasAttachment(), "Has attachment should match");
+                assertEquals(testFeedItem.isHasReceipt(), resultFeedItem.isHasReceipt(), "Has receipt should match");
             })
             .verifyComplete();
     }

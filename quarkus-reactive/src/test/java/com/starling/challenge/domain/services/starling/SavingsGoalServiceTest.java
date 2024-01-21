@@ -66,6 +66,11 @@ public class SavingsGoalServiceTest {
         resultUni.onItem().invoke(savingsGoal -> {
             assertNotNull(savingsGoal, "Savings goal should not be null");
             assertEquals(goalName, savingsGoal.getName(), "Savings goal name should match");
+            assertEquals(account.getAccountUid(), savingsGoal.getSavingsGoalUid(), "Savings goal UID should match");
+            assertEquals(target, savingsGoal.getTarget(), "Target amount should match");
+            assertEquals(totalSaved, savingsGoal.getTotalSaved(), "Total saved amount should match");
+            assertEquals(50, savingsGoal.getSavedPercentage(), "Saved percentage should match");
+            assertEquals("ACTIVE", savingsGoal.getState(), "Savings goal state should match");
         }).await().indefinitely();
     }
     

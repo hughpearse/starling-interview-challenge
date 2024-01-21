@@ -56,6 +56,11 @@ public class SavingsGoalServiceTest {
         // Assert: check results
         assertNotNull(result, "Savings goal should not be null");
         assertEquals(goalName, result.getName(), "Savings goal name should match");
+        assertEquals(account.getAccountUid(), result.getSavingsGoalUid(), "Savings goal UID should match");
+        assertEquals(target, result.getTarget(), "Target amount should match");
+        assertEquals(totalSaved, result.getTotalSaved(), "Total saved amount should match");
+        assertEquals(50, result.getSavedPercentage(), "Saved percentage should match");
+        assertEquals("ACTIVE", result.getState(), "Savings goal state should match");
     }
     
 }

@@ -45,13 +45,18 @@ public class AccountServiceTest {
         when(microProfileConfig.authorization()).thenReturn("token");
         when(microProfileConfig.useragent()).thenReturn("MyUserAgent");
         AccountsServiceImpl accountsService = new AccountsServiceImpl(microProfileConfig);
-
+    
         // Act: perform the test
         AccountV2 result = accountsService.getAccount(accountName);
-
+    
         // Assert: check results
         assertNotNull(result, "Account should not be null");
         assertEquals(accountName, result.getName(), "Account name should match");
+        assertEquals(testAccount.getAccountUid(), result.getAccountUid(), "Account ID should match");
+        assertEquals(testAccount.getAccountType(), result.getAccountType(), "Account type should match");
+        assertEquals(testAccount.getCurrency(), result.getCurrency(), "Account currency should match");
+        assertEquals(testAccount.getCreatedAt(), result.getCreatedAt(), "Account creation date should match");
     }
+    
     
 }
