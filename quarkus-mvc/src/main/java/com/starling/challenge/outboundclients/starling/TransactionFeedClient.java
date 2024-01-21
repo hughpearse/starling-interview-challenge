@@ -17,5 +17,4 @@ public interface TransactionFeedClient {
     @GET
     @Path("/feed/account/{accountUid}/settled-transactions-between")
     public FeedItems getTransactionFeed(@PathParam("accountUid") UUID accountUid, @QueryParam("minTransactionTimestamp") String minTransactionTimestamp, @QueryParam("maxTransactionTimestamp") String maxTransactionTimestamp);
-    
 }

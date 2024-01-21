@@ -1,34 +1,32 @@
 package com.starling.challenge.inboundapicontrollers;
 
-import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
+import java.util.Arrays;
 
 import com.starling.challenge.domain.model.starling.ErrorDetail;
+import com.starling.challenge.domain.model.starling.ErrorResponse;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import lombok.extern.slf4j.Slf4j;
 
 @Provider
-public class ErrorAdviceController implements ResponseExceptionMapper<RuntimeException>, ExceptionMapper<Exception> {
-
-    /*
-     * Handle remote starling errors
-     */
-    @Override
-    public RuntimeException toThrowable(Response response) {
-        if (response.getStatus() >= 300) {
-            throw new RuntimeException("The remote service responded with HTTP " + response.getStatus());
-        }
-        return null;
-    }
+@Slf4j
+public class ErrorAdviceController implements ExceptionMapper<Exception> {
 
     /**
      * Handle internal server errors
      */
     @Override
     public Response toResponse(Exception e) {
+        ErrorResponse errors = new ErrorResponse();
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setMessage(e.getMessage());
+        errors.setErrors(Arrays.asList(errorDetail));
+        errors.setSuccess(false);
+        log.error("Internal error: " + errorDetail.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(new ErrorDetail(e.getMessage()))
+                .entity(errors)
                 .build();
     }
 }

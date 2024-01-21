@@ -23,5 +23,4 @@ public interface AccountsClient {
     @GET
     @Path("/accounts/{accountUid}/confirmation-of-funds")
     public ConfirmationOfFundsResponse getConfirmationOfFunds(@PathParam("accountUid") UUID accountUid, @QueryParam("targetAmountInMinorUnits") BigInteger targetAmountInMinorUnits);
-
 }

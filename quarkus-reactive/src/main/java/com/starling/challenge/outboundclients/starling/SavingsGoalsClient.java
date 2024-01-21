@@ -30,5 +30,4 @@ public interface SavingsGoalsClient {
     @PUT
     @Path("/account/{accountUid}/savings-goals/{savingsGoalUid}/add-money/{transferUid}")
     public Uni<SavingsGoalTransferResponseV2> transferToSavingsGoal(@PathParam("accountUid") UUID accountUid, @PathParam("savingsGoalUid") UUID savingsGoalUid, @PathParam("transferUid") UUID transferUid, TopUpRequestV2 topUpRequestV2);
-
 }
