@@ -39,7 +39,9 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         });
         return savingsGoalListMono.flatMapIterable(savingsGoalsList -> savingsGoalsList)
         .filter(savingsGoal -> goalName.equals(savingsGoal.getName()))
-        .next();
+        .next()
+        .doOnSuccess(response -> log.info("Savings goal found."))
+        .doOnError(t -> log.info("Savings goal not found."));
     }
 
     public Mono<CreateOrUpdateSavingsGoalResponseV2> createSavingsGoal(

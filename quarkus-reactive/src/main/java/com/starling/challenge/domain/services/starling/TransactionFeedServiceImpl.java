@@ -42,7 +42,8 @@ public class TransactionFeedServiceImpl implements TransactionFeedService {
                 accountUid, 
                 isoDate_minTransactionTimestamp, 
                 isoDate_maxTransactionTimestamp)
-                .onItem().ifNotNull().invoke(feedItems -> log.info("Got transaction feed."));
+                .onItem().ifNotNull().invoke(feedItems -> log.info("Transaction feed found."))
+                .onFailure().invoke(t -> log.info("Transaction feed not found."));
     }
 
     public Uni<FeedItems> getTransactionFeedForWeek(

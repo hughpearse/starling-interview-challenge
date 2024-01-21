@@ -31,7 +31,9 @@ public class AccountsServiceImpl implements AccountsService {
         Mono<List<AccountV2>> listMono = accountsMono.map(accounts -> accounts.getAccounts());
         return listMono.flatMapIterable(accounts -> accounts)
         .filter(account -> accountName.equals(account.getName()))
-        .next();
+        .next()
+        .doOnSuccess(response -> log.info("Account found."))
+        .doOnError(t -> log.info("Account not found."));
     }
 
     public Mono<ConfirmationOfFundsResponse> getConfirmationOfFunds(

@@ -35,7 +35,9 @@ public class AccountsServiceImpl implements AccountsService {
         Uni<List<AccountV2>> listUni = accountsUni.onItem().transform(accounts -> accounts.getAccounts());
         return listUni.onItem().transformToMulti(Multi.createFrom()::iterable)
             .filter(account -> accountName.equals(account.getName()))
-            .toUni();
+            .toUni()
+            .onItem().ifNotNull().invoke(response -> log.info("Account found."))
+            .onFailure().invoke(t -> log.info("Account not found."));
     }
 
     public Uni<ConfirmationOfFundsResponse> getConfirmationOfFunds(
@@ -43,7 +45,8 @@ public class AccountsServiceImpl implements AccountsService {
         BigInteger targetAmountInMinorUnits
         ) {
         log.info("Getting confirmation of funds");
-        return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits);
+        return accountsClient.getConfirmationOfFunds(accountUid, targetAmountInMinorUnits)
+        .onItem().ifNotNull().invoke(response -> log.info("Funds confirmed."))
+        .onFailure().invoke(t -> log.info("Funds not confirmed."));
     }
-    
 }

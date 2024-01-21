@@ -35,7 +35,7 @@ public class TransactionFeedServiceImpl implements TransactionFeedService {
             weekEnding)
             .doOnSuccess(feedItems -> log.info("Transaction feed found."))
             .doOnError(t -> log.info("Transaction feed not found."));
-    }    
+    }
 
     public Mono<FeedItems> getTransactionFeedForWeek(
         UUID accountUid,

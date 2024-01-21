@@ -43,9 +43,10 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         });
         return savingsGoalListUni.onItem().transformToMulti(Multi.createFrom()::iterable)
             .filter(savingsGoal -> goalName.equals(savingsGoal.getName()))
-            .toUni();
+            .toUni()
+            .onItem().ifNotNull().invoke(response -> log.info("Savings goal found."))
+            .onFailure().invoke(t -> log.info("Savings goal not found."));
     }
-
 
     public Uni<CreateOrUpdateSavingsGoalResponseV2> createSavingsGoal(
         UUID accountUid,
@@ -63,7 +64,8 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
             ""
         );
         return savingsGoalsClient.createSavingsGoal(accountUid, request)
-        .onItem().ifNotNull().invoke(response -> log.info("Savings goal created."));
+        .onItem().ifNotNull().invoke(response -> log.info("Savings goal created."))
+        .onFailure().invoke(t -> log.info("Savings goal not created."));
     }
 
     public Uni<SavingsGoalTransferResponseV2> transferToSavingsGoal(
@@ -74,7 +76,8 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
         log.info("Transferring to savings goal");
         UUID transferUid = UUID.randomUUID();
         return savingsGoalsClient.transferToSavingsGoal(accountUid, savingsGoalUUID, transferUid, topUpRequestV2)
-        .onItem().ifNotNull().invoke(response -> log.info("Transfer completed."));
+        .onItem().ifNotNull().invoke(response -> log.info("Transfer completed."))
+        .onFailure().invoke(t -> log.info("Transfer not completed."));
     }
 
     public Uni<UUID> getOrCreateSavingsGoal(
